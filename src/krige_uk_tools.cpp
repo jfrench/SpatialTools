@@ -42,9 +42,7 @@ SEXP krige_uk(SEXP Xs, SEXP ys, SEXP Vs, SEXP Xps, SEXP Vps, SEXP Vops){
 	//diagvec(Vp) is equivalent to diag(Vp)
 	mat mspe = sum((V * w) % w, 0) - 2 * sum(w % Vop) + trans(diagvec(Vp));
 	
-	return Rcpp::List::create(Rcpp::Named("pred")= pred,  							  
-  							  Rcpp::Named("mspe")= trans(mspe),  							  
-							  Rcpp::Named("w")= w,  
+	return Rcpp::List::create(Rcpp::Named("pred")= pred,  							  			  Rcpp::Named("mspe")= mspe,  							  			  Rcpp::Named("w")= w,  
 							  Rcpp::Named("coeff")= coeff,
 							  Rcpp::Named("vcov.coeff")= vcov_coef
 							  );

@@ -17,6 +17,8 @@ export(krige.uk)
 export(pweights.uk)
 export(mspe.uk)
 export(krige.ok)
+export(krige.sk)
+#export(krige.sk2)
 
 #export(rmvnorm2)
 #export(condnorm.par2)

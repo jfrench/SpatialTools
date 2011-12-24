@@ -28,22 +28,34 @@ krige.ok <- function(y, V, Vp, Vop)
 	return(out)
 }
 
+# krige.sk2 <- function(y, V, Vp, Vop, m = 0)
+# {
+# 	y <- as.vector(y)
+# 	m <- as.vector(m)
+# 	
+# 	krige_sk_arg_check(y, V, Vp, Vop, m)
+# 	
+# 	w <- solve(V, Vop)
+# 	pred <- m + crossprod(w, y - m)
+# 	mspe <- colSums((V %*% w) * w) - 2 * colSums(w * Vop) + diag(Vp)
+# 
+# 	out <- list(pred = pred, mspe = mspe, w = w)
+# 	return(out)
+# }
+
 krige.sk <- function(y, V, Vp, Vop, m = 0)
 {
 	y <- as.vector(y)
+	m <- as.vector(m)
 	
-	w <- solve(V, Vop)
-	pred <- crossprod(w, y)
-	mspe <- colSums((V %*% w) * w) - 2 * colSums(w * Vop) + diag(Vp)
-	#krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, coeff = NULL)
+	krige_sk_arg_check(y, V, Vp, Vop, m)
+	
+	out <- .Call( "krige_sk", ys = y, Vs = V, 
+		Vps = Vp, Vops = Vop, ms = m, PACKAGE = "SpatialTools")
 
-	#out <- .Call( "krige_ok", ys = y, Vs = V, 
-	#	Vps = Vp, Vops = Vop, PACKAGE = "SpatialTools")
-		
 	#convert one-dimensional matrices to vectors
-	#out$pred <- as.vector(out$pred)	
-	#out$mspe <- as.vector(out$mspe)
-	out <- list(pred = pred, mspe = mspe)
+	out$pred <- as.vector(out$pred)	
+	out$mspe <- as.vector(out$mspe)
 	return(out)
 }
 

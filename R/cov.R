@@ -80,8 +80,9 @@ cov.st <- function(coords, time, sp.type = "exponential", sp.par = stop("specify
 
 	if(is.null(T)){ T <- dist1(matrix(time)) }
 	V.time <- simple.cov.time(T, t.type, t.par)
-	
-	V <- V.sp * V.time + (D==0)*(finescale.var + error.var)
+
+	#Only add finescale or measurement error when at the same location and time	
+	V <- V.sp * V.time + (D==0) * (T==0) * (finescale.var + error.var)
 
 	if(!is.null(pcoords))
 	{

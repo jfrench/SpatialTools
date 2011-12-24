@@ -77,6 +77,10 @@ krige_sk_arg_check <- function(y, V, Vp, Vop, m)
 	{
 		stop("V must be a square numeric matrix")
 	}
+	if(length(y) != nrow(V))
+	{
+		stop("length(y) must equal nrow(V)")
+	}
 	if(!is.matrix(Vp) || !is.numeric(Vp) || (nrow(Vp)!= ncol(Vp)))
 	{
 		stop("Vp must be a square numeric matrix")
@@ -84,10 +88,6 @@ krige_sk_arg_check <- function(y, V, Vp, Vop, m)
 	if(!is.matrix(Vop) || !is.numeric(Vop))
 	{
 		stop("Vop must be a numeric matrix")
-	}
-	if(length(y) != nrow(V))
-	{
-		stop("length(y) must equal nrow(V)")
 	}
 	if(length(y) != nrow(Vop))
 	{
@@ -97,9 +97,13 @@ krige_sk_arg_check <- function(y, V, Vp, Vop, m)
 	{
 		stop("ncol(Vp) must equal ncol(Vop)")
 	}
-	if(!is.numeric(m) || !(length(m)==1 || length(m)==length(y)))
+	if(!is.numeric(m))
 	{
-		stop("m must be a numeric vector of length 1 or length(m) must equal length(y)")
+		stop("m must be a numeric vector")
+	}
+	if(length(m)!=1)
+	{
+		stop("m must have length 1")
 	}
 }
 

@@ -41,7 +41,7 @@ SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops){
 		arma::rowvec mspe = sum((V * w) % w, 0) - 2 * sum(w % Vop) + trans(diagvec(Vp));
 		
 		return Rcpp::List::create(Rcpp::Named("pred") = pred,
-								  Rcpp::Named("mspe") = trans(mspe),
+								  Rcpp::Named("mspe") = mspe,
 								  Rcpp::Named("w") = w,
 								  Rcpp::Named("coeff") = coeff,
 								  Rcpp::Named("vcov.coeff") = vcov_coef
