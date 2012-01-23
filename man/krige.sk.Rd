@@ -3,7 +3,7 @@
 \alias{krige.sk}
 
 \title{
-	Performs Ordinary Kriging
+	Performs Simple Kriging
 } 
 
 \description{
@@ -13,8 +13,8 @@
 	\eqn{np \times np}
 	covariance matrix of the responses to be predicted, \code{Vop}, 
 	the \eqn{n \times np} matrix of covariances between the observed 
-	responses and the responses to be predicted, and \code{m}, a vector 
-  (of length 1 or \eqn{np}) identifying the numerical value of the mean
+	responses and the responses to be predicted, and \code{m}, a numeric vector 
+  of length 1 identifying the value of the mean
   for each response.
 } 
 
@@ -27,7 +27,7 @@
 		Should be a matrix of size \eqn{n \times 1} or a vector of 
 		length \eqn{n}.}
 	\item{V}{The covariance matrix of the observed responses.  
-		The size is \eqn{n times n}.} 
+		The size is \eqn{n \times n}.} 
 	\item{Vp}{The covariance matrix of the responses to be predicted.
 		The size is \eqn{np \times np}} 
 	\item{Vop}{The cross-covariance between the observed responses 
@@ -40,7 +40,7 @@
 The function a list containing the following objects:
 	\item{pred}{A vector of length \eqn{np} containing the predicted
 		responses.}
-	\item{mope}{A vector of length \eqn{np} containing the 
+	\item{mspe}{A vector of length \eqn{np} containing the 
 		mean-square prediction error of the predicted
 		responses.}
 	\item{w}{A \eqn{np \times n} matrix containing the kriging
@@ -50,7 +50,7 @@ The function a list containing the following objects:
 \details{
 It is assumed that there are \eqn{n} observed data values
 and that we wish to make predictions at \eqn{np} locations.
-The mean is subtracted from each value of \eqn{y} before determining the kriging weights, 
+The mean is subtracted from each value of \code{y} before determining the kriging weights, 
 and then the mean is added onto the predicted response.
 }
 \references{ Statistical Methods for Spatial Data Analysis, Schabenberger and Gotway (2003).  See p. 226-228.} 

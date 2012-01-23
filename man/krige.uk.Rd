@@ -26,7 +26,7 @@
 \arguments{
 	\item{y}{The vector of observed responses.  Should be a matrix of size \eqn{n \times 1} or a vector of length \eqn{n}.}
 	\item{V}{The covariance matrix of the observed responses.  
-		The size is \eqn{n times n}.} 
+		The size is \eqn{n \times n}.} 
 	\item{Vp}{The covariance matrix of the responses to be predicted.  The size is \eqn{np \times np}} 
 	\item{Vop}{The cross-covariance between the observed responses and the responses to be predicted.  The size is \eqn{n \times np}} 
 	\item{X}{The design matrix of the observed data.  The size is \eqn{n \times k}} 
@@ -38,11 +38,11 @@
 The function a list containing the following objects:
 	\item{pred}{A vector of length \eqn{np} containing the predicted
 		responses.}
-	\item{mope}{A vector of length \eqn{np} containing the 
+	\item{mspe}{A vector of length \eqn{np} containing the 
 		mean-square prediction error of the predicted
 		responses.}
 	\item{w}{A \eqn{np \times n} matrix containing the kriging
-		weights used to calculate \code{red}.} 
+		weights used to calculate \code{pred}.} 
 	\item{coeff}{A vector of length \eqn{k} containing the estimated
 		regression coefficients.} 
 	\item{vcov.coeff}{A \eqn{k \times k} matrix containing the
