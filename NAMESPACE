@@ -1,4 +1,5 @@
 useDynLib(SpatialTools)
+export(coincident)
 export(dist1)
 export(dist2)
 

@@ -53,7 +53,7 @@
 }
 
 \details{
-	When doing the numerical optimizaiton, the covariance function is reparameterized slightly to speedup computation.  
+	When doing the numerical optimization, the covariance function is reparameterized slightly to speedup computation.  
 	Specifically, the variance parameter for the process of interest,\code{sp.par[1]}, is profiled out,
 	and the \code{error.var} parameter is parameterized as \code{sp.par[1] * error.ratio}, where \code{error.ratio = error.var/sp.par[1]}.
 }

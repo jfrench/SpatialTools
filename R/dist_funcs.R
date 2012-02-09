@@ -46,3 +46,23 @@ dist2_arg_check <- function(coords1, coords2)
 		stop("coords1 and coords2 must have the same number of columns")
 	}
 }
+
+#Function to determine coincident locations
+coincident <- function(coords1, coords2)
+{
+	if(!is.matrix(coords1) || !is.numeric(coords1))
+	{
+		stop("coords1 must be a numeric matrix")
+	}
+	if(!is.matrix(coords2) || !is.numeric(coords2))
+	{
+		stop("coords2 must be a numeric matrix")
+	}
+	if(ncol(coords1) != ncol(coords2))
+	{
+		stop("coords1 and coords2 must have the same number of columns")
+	}
+	
+	.Call( "coincident", coords1 = coords1, coords2 = coords2, 
+		eps = "numeric", PACKAGE = "SpatialTools")
+}

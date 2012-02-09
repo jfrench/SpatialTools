@@ -1,4 +1,8 @@
 #Changes
+
+#0.3.4
+	Added coincident function to determine coincident locations.
+
 #0.3.3 
 	Added krige.sk function to perform simple kriging.
 	Fixed bug in cov.st for separable ar1 process with nugget
