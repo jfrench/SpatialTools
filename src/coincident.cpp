@@ -1,8 +1,8 @@
-#include "coincident.h"
+#include "coincident_cpp.h"
 
 using namespace Rcpp;
 
-SEXP coincident(SEXP coords1, SEXP coords2, SEXP eps){
+SEXP coincident_cpp(SEXP coords1, SEXP coords2, SEXP eps){
 
 		#include <math.h>
 

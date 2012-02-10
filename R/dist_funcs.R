@@ -63,6 +63,6 @@ coincident <- function(coords1, coords2)
 		stop("coords1 and coords2 must have the same number of columns")
 	}
 	
-	.Call( "coincident", coords1 = coords1, coords2 = coords2, 
-		eps = "numeric", PACKAGE = "SpatialTools")
+	.Call( "coincident_cpp", coords1 = coords1, coords2 = coords2, 
+		eps = .Machine$double.eps, PACKAGE = "SpatialTools")
 }
