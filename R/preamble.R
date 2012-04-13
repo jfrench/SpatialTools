@@ -3,7 +3,7 @@
     x <- regexpr("[0-9]{4}", date)
     yr <- substr(date, x[1], x[1] + attr(x, "match.length") - 1)
 
-	greet <- paste("#", "# SpatialTools Package v.0.3.4", "# 2012-02-08", 
+	greet <- paste("#", "# SpatialTools Package v.0.3.5", "# 2012-04-12", 
 	paste("# Copyright (C) 2011-", yr, ", Joshua P. French", sep = ""), 
 	"# Written by Joshua P. French", 
 	"# This research was partially supported under NSF Grant ATM-0534173", "#", sep = "\n")

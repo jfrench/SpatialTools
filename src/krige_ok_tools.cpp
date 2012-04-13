@@ -21,12 +21,12 @@ SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops){
 		//compute useful matrices.  Some expressions simply because X is a vector of 1s
 		//sum(A, 0) is the equivalent of colSums(A) where A is a matrix
 		arma::mat ViX = arma::solve(V, X);
-		double XtViX = as_scalar(sum(ViX, 0));
+        double XtViX = arma::as_scalar(sum(ViX, 0));
 		double vcov_coef = 1/XtViX;
 
 		//compute gls estimates of regression coefficients
 		//equivalent to solve(XtViX, crossprod(ViX, y))
-		double coeff = as_scalar(sum(ViX % y)/XtViX);
+        double coeff = arma::as_scalar(sum(ViX % y)/XtViX);
 		
 		//compute kriging weights
 		//R version: w <- solve(V, Vop - tcrossprod(X, (colSums(solve(V, Vop)) - 1)/XtViX))

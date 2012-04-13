@@ -248,14 +248,14 @@ logLik.cov.sp <- function(par, X, y, D, sp.type, reml = FALSE, minus2 = FALSE)
 	{
 		sigmasq <- as.vector(rtVir/n)
 	
-		lik <- determinant(V, log=TRUE)$modulus + 
+		lik <- determinant(V, logarithm=TRUE)$modulus + 
 		rtVir/sigmasq + length(r) * log(2*pi) + length(r)*log(sigmasq)
 	}else
 	{
 		sigmasq <- as.vector(rtVir/df.resid)
 	
-		lik <- determinant(V, log=TRUE)$modulus + 
-		determinant(XtViX/sigmasq, log=TRUE)$modulus +
+		lik <- determinant(V, logarithm=TRUE)$modulus + 
+		determinant(XtViX/sigmasq, logarithm=TRUE)$modulus +
 		rtVir/sigmasq + df.resid * log(2*pi) + length(r)*log(sigmasq)
 	}
 	if(!minus2)
@@ -377,14 +377,14 @@ logLik.cov.st <- function(par, X, y, D, T, sp.type, t.type, reml = FALSE, minus2
 	{
 		sigmasq <- as.vector(rtVir/n)
 	
-		lik <- determinant(V, log=TRUE)$modulus + 
+		lik <- determinant(V, logarithm=TRUE)$modulus + 
 		rtVir/sigmasq + length(r) * log(2*pi) + length(r)*log(sigmasq)
 	}else
 	{
 		sigmasq <- as.vector(rtVir/df.resid)
 	
-		lik <- determinant(V, log=TRUE)$modulus + 
-		determinant(XtViX/sigmasq, log=TRUE)$modulus +
+		lik <- determinant(V, logarithm=TRUE)$modulus + 
+		determinant(XtViX/sigmasq, logarithm=TRUE)$modulus +
 		rtVir/sigmasq + df.resid * log(2*pi) + length(r)*log(sigmasq)
 	}
 	if(!minus2)
