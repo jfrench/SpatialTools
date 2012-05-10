@@ -491,3 +491,154 @@ mspe_uk_arg_check <- function(w, V, Vp, Vop)
 	}
 
 }
+
+condnorm_par_arg_check <- function(y, V, Vp, Vop, coeff, X, Xp, method)
+{
+	n <- length(y)
+	nk <- length(coeff)
+
+	if(!is.numeric(y))
+	{
+		stop("y must be a numeric vector")
+	}
+	if(!is.matrix(V) || !is.numeric(V) || (nrow(V)!= ncol(V)))
+	{
+		stop("V must be a square numeric matrix")
+	}
+	if(!is.matrix(Vp) || !is.numeric(Vp) || (nrow(Vp)!= ncol(Vp)))
+	{
+		stop("Vp must be a square numeric matrix")
+	}
+	if(!is.matrix(Vop) || !is.numeric(Vop))
+	{
+		stop("Vop must be a numeric matrix")
+	}
+	if(length(y) != nrow(V))
+	{
+		stop("length of y must match nrows of V")
+	}
+	if(length(y) != nrow(Vop))
+	{
+		stop("length of y must match nrows of Vop")
+	}
+	if(ncol(Vp) != ncol(Vop))
+	{
+		stop("ncols of Vp must match ncols of Vop")
+	}
+
+	if(!is.numeric(coeff))
+	{
+		stop("coeff must be a numeric vector")
+	}
+	if((is.null(X) && !is.null(Xp)) || (!is.null(X) && is.null(Xp)))
+	{
+		stop("If X is supplied, Xp must also be supplied (and vice versa)")
+	}
+	if(!is.null(X))
+	{
+		if(nrow(X) != n)
+		{
+			stop("nrows of X must match length of y")
+		}
+		if(ncol(X) != nk)
+		{
+			stop("ncols of X must match length of coeff")
+		}
+		if(nrow(Xp) != nrow(Vp))
+		{
+			stop("nrows of Xp must match nrows of Vp")
+		}
+		if(ncol(Xp) != ncol(X))
+		{
+			stop("ncols of Xp must match ncols of X")
+		}
+	}
+	if(!valid_decomp_type)
+	{
+		stop("method must be 'eigen', 'chol', or 'svd'")
+	}
+}
+
+rmvnorm_arg_check <- function(nsim, mu, V, method)
+{
+	if(!is.numeric(nsim) || !is.numeric(mu) || ! is.numeric(V))
+	{
+		stop("nsim, mu, and V arguments must all be numeric")
+	}
+	if(!isSymmetric(V) || !is.matrix(V))
+	{
+		stop("V must be a symmetrix matrix")
+	}
+	if(length(mu) != nrow(V))
+	{
+		stop("The length of mu must equal nrows of V")
+	}
+	if(!(method == "eigen" || method == "chol" || method == "svd"))
+	{
+		stop("method must be 'eigen', 'chol', or 'svd'")
+	}
+}
+
+rcondsim_arg_check <- function(nsim, y, V, Vp, Vop, Ve.diag, method = "eigen", krige.obj)
+{
+	if(!(is.numeric(nsim)))
+	{
+		stop("nsim must be a positive number")
+	}
+	if(length(nsim) != 1)
+	{
+		stop("nsim must be a vector of length 1")
+	}
+	if(!(nsim > 1))
+	{
+		stop("nsim must be at least 1")
+	}
+	if(!is.numeric(y) || !is.vector(y))
+	{
+		stop("y must be a numeric vector")
+	}
+	if(!is.matrix(V) || !is.numeric(V) || (nrow(V)!= ncol(V)))
+	{
+		stop("V must be a square numeric matrix")
+	}
+	if(length(y) != nrow(V))
+	{
+		stop("length(y) must equal nrow(V)")
+	}
+	if(!is.matrix(Vp) || !is.numeric(Vp) || (nrow(Vp)!= ncol(Vp)))
+	{
+		stop("Vp must be a square numeric matrix")
+	}
+	if(!is.matrix(Vop) || !is.numeric(Vop))
+	{
+		stop("Vop must be a numeric matrix")
+	}
+	if(length(y) != nrow(Vop))
+	{
+		stop("length(y) must equal nrow(Vop)")
+	}
+	if(ncol(Vp) != ncol(Vop))
+	{
+		stop("ncol(Vp) must equal ncol(Vop)")
+	}
+	if(!(is.vector(Ve.diag) && (is.numeric(Ve.diag))))
+	{
+		stop("Ve.diag must be a numeric vector")
+	}
+	if(length(y) != length(Ve.diag))
+	{
+		stop("Ve.diag must have the same length as y")
+	}
+	if(!(method == "eigen" || method == "chol" || method == "svd"))
+	{
+		stop("method must be 'eigen', 'chol', or 'svd'")
+	}	
+	if(!is.list(krige.obj))
+	{
+		stop("krige.obj should be an object returned by a kriging function and should contain w, a matrix of prediction weights for the observed data.")		
+	}
+	if(is.null(krige.obj$w))
+	{
+		stop("krige.obj should be an object returned by a kriging function and should contain w, a matrix of prediction weights for the observed data.")		
+	}
+}

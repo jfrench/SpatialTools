@@ -127,7 +127,8 @@ SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms){
     
     return Rcpp::List::create(Rcpp::Named("pred") = pred,
                               Rcpp::Named("mspe") = mspe,
-                              Rcpp::Named("w") = w
+                              Rcpp::Named("w") = w,
+                              Rcpp::Named("mean") = m
                               );
 }
 

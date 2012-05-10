@@ -13,6 +13,7 @@ export(maxlik.cov.st)
 
 export(condnorm.par)
 export(rmvnorm)
+export(rcondsim)
 
 export(krige.uk)
 export(pweights.uk)

@@ -42,3 +42,42 @@
 # 	return(out)
 # }
 
+
+
+#Generally slower than R based rmvnorm
+#rmvnorm2 <- function(nsim = 1, mu, V, method = "eigen")
+#{
+#	mu <- as.vector(mu)
+#	rmvnorm_arg_check(nsim, mu, V, method)
+#	if(method == "eigen")
+#	{
+#		.Call( "rmvnorm", nsims = nsim, mus = mu, Vs = V, methods = 1,
+#			PACKAGE = "SpatialTools")
+#	}else if(method == "chol")
+#	{
+#		.Call( "rmvnorm", nsims = nsim, mus = mu, Vs = V, methods = 2,
+#			PACKAGE = "SpatialTools")
+#	}else
+#	{
+#		.Call( "rmvnorm", nsims = nsim, mus = mu, Vs = V, methods = 3,
+#			PACKAGE = "SpatialTools")
+#	}
+#}
+
+#condnorm.par2 <- function(y, V, Vp, Vop, coeff, X, Xp, method = "eigen")
+#{
+#	if(method == "eigen")
+#	{
+#		.Call( "condnorm_par", ys = y, Vs = V, Vps = Vp, Vops = Vop, coeffs = coeff,
+#			Xs = X, Xps = Xp, methods = 1, PACKAGE = "SpatialTools")
+#	}else if(method == "chol")
+#	{
+#		.Call( "condnorm_par", ys = y, Vs = V, Vps = Vp, Vops = Vop, coeffs = coeff,
+#			Xs = X, Xps = Xp, methods = 2, PACKAGE = "SpatialTools")
+#	}else
+#	{
+#		.Call( "condnorm_par", ys = y, Vs = V, Vps = Vp, Vops = Vop, coeffs = coeff,
+#			Xs = X, Xps = Xp, methods = 3, PACKAGE = "SpatialTools")
+#	}
+#}
+#
