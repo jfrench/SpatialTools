@@ -78,6 +78,23 @@ krige.sk <- function(y, V, Vp, Vop, m = 0)
 	return(out)
 }
 
+krige.sk2 <- function(y, V, Vp, Vop, m = 0, return.w = FALSE, nsim = 0, 
+	Ve.diag = NULL, method = "eigen")
+{
+	# check arguments, create appropriate values of rws and method for .Call
+	ins <- krige_arg_check2(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, return.w, nsim, Ve.diag, method)
+
+	out <- .Call( "krige_sk2", ys = y, Vs = V, Vps = Vp, Vops = Vop, ms = m, 
+		rws = ins$rws, nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
+		PACKAGE = "SpatialTools")
+	
+	#convert one-dimensional matrices to vectors
+	out$pred <- as.vector(out$pred)	
+	out$mspe <- as.vector(out$mspe)
+	return(out)
+}
+2
+
 pweights.uk <- function(X, V, Xp, Vp, Vop)
 {
 	pweights_uk_arg_check(X, V, Xp, Vp, Vop)

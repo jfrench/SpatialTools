@@ -245,6 +245,107 @@ SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms){
                               );
 }
 
+SEXP krige_sk2(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms, SEXP rws, SEXP nsims, 
+	SEXP Vediags, SEXP methods){
+    
+    NumericVector yr(ys);
+    arma::colvec y(yr.begin(), yr.size(), false);
+    
+    NumericMatrix Vr(Vs);
+    arma::mat V(Vr.begin(), Vr.nrow(), Vr.ncol(), false);
+    
+    NumericMatrix Vpr(Vps);
+    arma::mat Vp(Vpr.begin(), Vpr.nrow(), Vpr.ncol(), false);
+    
+    NumericMatrix Vopr(Vops);
+    arma::mat Vop(Vopr.begin(), Vopr.nrow(), Vopr.ncol(), false);
+    
+    NumericVector mr(ms);
+    double m = mr[0]; 
+    
+	int rw = as<int>(rws);
+
+	int nsim = as<int>(nsims);
+
+	NumericVector Vediagr(Vediags);
+	arma::colvec Vediag(Vediagr.begin(), Vediagr.size(), false);
+
+	int method = as<int>(methods);
+
+	int n = y.n_elem;
+	int np = Vp.n_cols;
+
+    //compute kriging weights
+    //R version: w <- solve(V, Vop)
+    arma::mat w = arma::solve(V, Vop);
+    
+    //blup for Yp
+    //R version:  pred <- m + crossprod(w, y - m)
+    arma::colvec pred = m + trans(w) * (y - m);
+    
+    //variance of (Yp - pred)
+    //R version: mspe <- colSums((V %*% w) * w) - 2 * colSums(w * Vop) + diag(Vp)
+    arma::rowvec mspe = sum((V * w) % w, 0) - 2 * sum(w % Vop) + trans(diagvec(Vp));
+    
+	//If nsim = 0, then don't do conditional simulation
+	if(nsim == 0)
+	{
+		//If rw = 0 (return.w = 0), then don't return w, otherwise do
+		if(rw == 0)
+		{
+			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+									Rcpp::Named("mspe") = mspe,
+	                        		Rcpp::Named("mean") = m
+                             		);		
+		}
+		else
+		{
+			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+								Rcpp::Named("mspe") = mspe,
+								Rcpp::Named("w") = w,
+                              	Rcpp::Named("mean") = m
+                              	);		
+		}
+	}
+	else // Do conditional simulation
+	{
+		// Modify V matrix to not include measurement error
+		arma::mat Vomod = V - diagmat(Vediag);
+		
+		// Create combined observed, predicted covariance matrix
+		// Va <- rbind(cbind(Vomod, Vop), cbind(t(Vop), Vp))
+		arma::mat Va = join_cols(join_rows(Vomod, Vop), join_rows(trans(Vop), Vp));
+	
+		int na = Va.n_rows;
+	
+		arma::mat dV = arma::mat(na, na);
+		
+		dV = decomp_V(Va, method);
+
+		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method);
+
+		// If rw = 0 (return.w = 0), then don't return w, otherwise do (along with
+		// the conditional simulation
+		if(rw == 0)
+		{
+			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+									Rcpp::Named("mspe") = mspe,
+									Rcpp::Named("simulations") = simulations,
+	                                Rcpp::Named("mean") = m
+      		                        );		
+		}
+		else
+		{
+			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+								Rcpp::Named("mspe") = mspe,
+								Rcpp::Named("w") = w,
+								Rcpp::Named("simulations") = simulations,
+                                Rcpp::Named("mean") = m
+                                );		
+		}
+	}
+}
+
 SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops){
     
     NumericVector yr(ys);
