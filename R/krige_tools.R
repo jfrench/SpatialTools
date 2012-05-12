@@ -17,9 +17,9 @@ krige.uk <- function(y, V, Vp, Vop, X, Xp, return.w = FALSE, nsim = 0,
 	Ve.diag = NULL, method = "eigen")
 {
 	# check arguments, create appropriate values of rws and method for .Call
-	ins <- krige_arg_check2(y, V, Vp, Vop, X, Xp, m = 0, return.w, nsim, Ve.diag, method)
+	ins <- krige_arg_check(y, V, Vp, Vop, X, Xp, m = 0, return.w, nsim, Ve.diag, method)
 
-	out <- .Call( "krige_uk2", ys = y, Vs = V, Vps = Vp, Vops = Vop, Xs = X, Xps = Xp,
+	out <- .Call( "krige_uk", ys = y, Vs = V, Vps = Vp, Vops = Vop, Xs = X, Xps = Xp,
 		rws = ins$rws, nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
 		PACKAGE = "SpatialTools")
 
@@ -49,9 +49,9 @@ krige.ok <- function(y, V, Vp, Vop, return.w = FALSE, nsim = 0,
 	Ve.diag = NULL, method = "eigen")
 {
 	# check arguments, create appropriate values of rws and method for .Call
-	ins <- krige_arg_check2(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, return.w, nsim, Ve.diag, method)
+	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, return.w, nsim, Ve.diag, method)
 
-	out <- .Call( "krige_ok2", ys = y, Vs = V, Vps = Vp, Vops = Vop, 
+	out <- .Call( "krige_ok", ys = y, Vs = V, Vps = Vp, Vops = Vop, 
 		rws = ins$rws, nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
 		PACKAGE = "SpatialTools")
 
@@ -82,9 +82,9 @@ krige.sk <- function(y, V, Vp, Vop, m = 0, return.w = FALSE, nsim = 0,
 	Ve.diag = NULL, method = "eigen")
 {
 	# check arguments, create appropriate values of rws and method for .Call
-	ins <- krige_arg_check2(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, return.w, nsim, Ve.diag, method)
+	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, return.w, nsim, Ve.diag, method)
 
-	out <- .Call( "krige_sk2", ys = y, Vs = V, Vps = Vp, Vops = Vop, ms = m, 
+	out <- .Call( "krige_sk", ys = y, Vs = V, Vps = Vp, Vops = Vop, ms = m, 
 		rws = ins$rws, nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
 		PACKAGE = "SpatialTools")
 	
@@ -93,7 +93,6 @@ krige.sk <- function(y, V, Vp, Vop, m = 0, return.w = FALSE, nsim = 0,
 	out$mspe <- as.vector(out$mspe)
 	return(out)
 }
-2
 
 pweights.uk <- function(X, V, Xp, Vp, Vop)
 {
