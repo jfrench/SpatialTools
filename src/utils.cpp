@@ -42,10 +42,11 @@ arma::mat decomp_V(arma::mat Va, int method)
     return dV;    
 }
 
-arma::mat rcondsim(int nsim, arma::vec y, arma::mat w, arma::mat Vediag, arma::mat dV, int method)
+arma::mat rcondsim(int nsim, arma::vec y, arma::mat w, arma::mat Vediag, arma::mat dV, int method, double m)
 {
     int n = y.n_elem;
 	int na = dV.n_rows;
+	arma::mat condsim = arma::mat(na, nsim);
 
 	RNGScope scope;
 	
@@ -53,11 +54,23 @@ arma::mat rcondsim(int nsim, arma::vec y, arma::mat w, arma::mat Vediag, arma::m
 	arma::mat Z(Zr.begin(), (na + n), nsim);
     
 	arma::mat newsim = dV * Z.rows(0, na - 1);
-    
-	arma::mat newZ = repmat(y, 1, nsim) - newsim.rows(0, n - 1) + diagmat(sqrt(Vediag)) * Z.rows(na, na + n - 1);
-    
-	//accounts for the fact that indexing starts at zero
-	arma::mat condsim = newsim.rows(n, na - 1) + trans(w) * newZ;
   
+    // Conditional simulation algorithm changes slightly for simple kriging
+    // when m != 0.  
+    if(m != 0)
+    {    
+        arma::mat newZ = repmat(y - m, 1, nsim) - newsim.rows(0, n - 1) + diagmat(sqrt(Vediag)) * Z.rows(na, na + n - 1);
+    
+        //accounts for the fact that indexing starts at zero
+        condsim = m + newsim.rows(n, na - 1) + trans(w) * newZ;
+    }
+    else
+    {    
+        arma::mat newZ = repmat(y, 1, nsim) - newsim.rows(0, n - 1) + diagmat(sqrt(Vediag)) * Z.rows(na, na + n - 1);
+        
+        //accounts for the fact that indexing starts at zero
+        condsim = newsim.rows(n, na - 1) + trans(w) * newZ;
+    }
+
     return condsim;
 }

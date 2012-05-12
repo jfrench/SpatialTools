@@ -17,7 +17,8 @@
 } 
 
 \usage{
-	krige.ok(y, V, Vp, Vop)
+	krige.ok(y, V, Vp, Vop, return.w = FALSE, nsim = 0, 
+	Ve.diag = NULL, method = "eigen")
 } 
 
 \arguments{
@@ -31,6 +32,10 @@
 	\item{Vop}{The cross-covariance between the observed responses 
 		and the responses to be predicted.  The size is 
 		\eqn{n \times np}} 
+	\item{return.w}{A boolean value (TRUE or FALSE) indicating whether the matrix of prediction weights should be returned.  By default, this is FALSE (and results in faster computation since there is less to return).}
+	\item{nsim}{A non-negative value indicating the number of conditional simulations that should be returned.  If this is less than 1, then no conditional simulation is done.}
+	\item{Ve.diag}{A vector of length n specifying the measurement error variances of the observed data.} 
+	\item{method}{A character vector specifying the method used to decompose \code{V}.  Options are "eigen", "chol", or "svd" (Eigen decomposition, Cholesky decomposition, or Singular value decomposition, respectively).} 
 } 
 
 \value{
@@ -40,11 +45,13 @@ The function a list containing the following objects:
 	\item{mspe}{A vector of length \eqn{np} containing the 
 		mean-square prediction error of the predicted
 		responses.}
+	\item{coeff}{A vector of length \eqn{k} containing the estimated
+		regression coefficients.} 
+	\item{vcov.coeff}{A \eqn{k \times k} matrix containing the
+	(estimated) covariance matrix of estimated the regression coefficients.} 
 	\item{w}{A \eqn{np \times n} matrix containing the kriging
 		weights used to calculate \code{pred}.} 
-	\item{coeff}{The estimated mean.} 
-	\item{vcov.coeff}{The
-	(estimated) covariance matrix of the estimated mean.} 
+	\item{simulations}{An \eqn{n \times nsim} matrix containing the \code{nsim} realizations of the conditional realizations.  Each column of the matrix represents a realization of the conditional normal distribution.}
 }
 
 \details{
@@ -60,10 +67,25 @@ and that we wish to make predictions at \eqn{np} locations.
 \keyword{ordinary} 
 
 \examples{
-	data(toydata)
-	y <- toydata$y
-	V <- toydata$V
-	Vp <- toydata$Vp
-	Vop <- toydata$Vop
-	krige.ok(y, V, Vp, Vop)
+# create observed and predicted coordinates
+ocoords <- matrix(runif(100), ncol = 2)
+pcoords <- matrix(runif(200), ncol = 2)
+
+# include some observed locations in the predicted coordinates
+acoords <- rbind(ocoords, pcoords)
+
+# create covariance matrix
+C3 <- cov.sp(coords = ocoords, sp.type = "matern", sp.par = c(2, 1), smoothness = 1, 
+	finescale = 0, error = 0.5, pcoords = acoords)
+
+# generate data with error
+y <- rmvnorm(nsim = 1, mu = rep(2, 50), V = C3$V) + rnorm(50, sd = sqrt(.5))
+
+# use universal kriging to make predictions.  Do not return weights matrix or do 
+# conditional simulation
+krige.obj <- krige.ok(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, return.w = FALSE, nsim = 0)
+
+#Do return weights matrix and do conditional simulation
+krige.obj2 <- krige.ok(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, return.w = TRUE, nsim = 100, Ve.diag = rep(.5, 50), method = "eigen")
+
 }

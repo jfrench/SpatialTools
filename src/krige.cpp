@@ -92,7 +92,7 @@ SEXP krige_uk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP Xs, SEXP Xps, SEXP rws
 		
 		dV = decomp_V(Va, method);
 
-		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method);
+		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method, 0);
 
 		// If rw = 0 (return.w = 0), then don't return w, otherwise do (along with
 		// the conditional simulation
@@ -193,7 +193,7 @@ SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms, SEXP rws, SEXP nsi
 		
 		dV = decomp_V(Va, method);
 
-		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method);
+		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method, m);
 
 		// If rw = 0 (return.w = 0), then don't return w, otherwise do (along with
 		// the conditional simulation
@@ -304,7 +304,7 @@ SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP rws, SEXP nsims,
 		
 		dV = decomp_V(Va, method);
 
-		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method);
+		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method, 0);
 
 		// If rw = 0 (return.w = 0), then don't return w, otherwise do (along with
 		// the conditional simulation
