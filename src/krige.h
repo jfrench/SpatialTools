@@ -13,4 +13,9 @@ RcppExport SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops);
 
 RcppExport SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms);
 
+RcppExport SEXP krige_uk2(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP Xs, SEXP Xps, SEXP rws, SEXP nsims, 
+	SEXP Vediags, SEXP methods);
+
+RcppExport SEXP krige_ok2(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP rws, SEXP nsims, SEXP Vediags, SEXP methods);
+
 #endif

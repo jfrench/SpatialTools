@@ -308,29 +308,105 @@ maxlik_cov_sp_check_arg <- function(X, y, coords, sp.type,
 
 krige_arg_check <- function(y, V, Vp, Vop, X, Xp, coeff)
 {
-	n <- length(y)
+n <- length(y)
+
+if(!is.numeric(y))
+{
+stop("y must be a numeric vector")
+}
+if(!is.matrix(V) || !is.numeric(V) || (nrow(V)!= ncol(V)))
+{
+stop("V must be a square numeric matrix")
+}
+if(!is.matrix(Vp) || !is.numeric(Vp) || (nrow(Vp)!= ncol(Vp)))
+{
+stop("Vp must be a square numeric matrix")
+}
+if(!is.matrix(Vop) || !is.numeric(Vop))
+{
+stop("Vop must be a numeric matrix")
+}
+if(length(y) != nrow(V))
+{
+stop("length(y) must equal nrow(V)")
+}
+if(length(y) != nrow(Vop))
+{
+stop("length(y) must equal nrow(Vop)")
+}
+if(ncol(Vp) != ncol(Vop))
+{
+stop("ncol(Vp) must equal ncol(Vop)")
+}
+if((is.null(X) && !is.null(Xp)) || (!is.null(X) && is.null(Xp)))
+{
+stop("If X is supplied, Xp must also be supplied (and vice versa)")
+}
+if(!is.null(X))
+{
+if(nrow(X) != n)
+{
+stop("nrow(X) must equal length(y)")
+}
+if(nrow(Xp) != nrow(Vp))
+{
+stop("nrow(Xp) must equal nrow(Vp)")
+}
+if(ncol(Xp) != ncol(X))
+{
+stop("ncol(Xp) must equal ncol(X)")
+}
+}
+if(!is.null(coeff))
+{
+if(!is.numeric(coeff))
+{
+stop("coeff must be a numeric vector")
+}
+if(length(coeff) > 1)
+{
+if(length(coeff) != ncol(X))
+{
+stop("length(coeff) must equal ncol(X)")
+}
+}
+}
+}
+
+krige_arg_check2 <- function(y, V, Vp, Vop, X, Xp, m, return.w, nsim, Ve.diag, method)
+{
 
 	if(!is.numeric(y))
 	{
-		stop("y must be a numeric vector")
+		stop("y must be numeric")
 	}
+	if(!is.vector(y))
+	{
+		stop("y must be a vector")
+	}
+
+	n <- length(y)
+
 	if(!is.matrix(V) || !is.numeric(V) || (nrow(V)!= ncol(V)))
 	{
 		stop("V must be a square numeric matrix")
 	}
+	if(nrow(V) != n)
+	{
+		stop("nrow(V) must equal length(y))")
+	}
+
 	if(!is.matrix(Vp) || !is.numeric(Vp) || (nrow(Vp)!= ncol(Vp)))
 	{
 		stop("Vp must be a square numeric matrix")
 	}
+
 	if(!is.matrix(Vop) || !is.numeric(Vop))
 	{
 		stop("Vop must be a numeric matrix")
 	}
-	if(length(y) != nrow(V))
-	{
-		stop("length(y) must equal nrow(V)")
-	}
-	if(length(y) != nrow(Vop))
+
+	if(n != nrow(Vop))
 	{
 		stop("length(y) must equal nrow(Vop)")
 	}
@@ -338,10 +414,12 @@ krige_arg_check <- function(y, V, Vp, Vop, X, Xp, coeff)
 	{
 		stop("ncol(Vp) must equal ncol(Vop)")
 	}
+	
 	if((is.null(X) && !is.null(Xp)) || (!is.null(X) && is.null(Xp)))
 	{
 		stop("If X is supplied, Xp must also be supplied (and vice versa)")
 	}
+
 	if(!is.null(X))
 	{
 		if(nrow(X) != n)
@@ -357,20 +435,57 @@ krige_arg_check <- function(y, V, Vp, Vop, X, Xp, coeff)
 			stop("ncol(Xp) must equal ncol(X)")
 		}
 	}
-	if(!is.null(coeff))
+	
+	if(!(is.numeric(m) && length(m) == 1))
 	{
-		if(!is.numeric(coeff))
+		stop("m must be a numeric vector of length 1")
+	}
+
+	if(length(return.w) != 1)
+	{
+		stop("return.w must be TRUE or FALSE")
+	}
+	if(!((return.w == TRUE) || (return.w == FALSE)))
+	{
+		stop("return.w must be TRUE or FALSE")
+	}
+
+	if(!(is.numeric(nsim) && length(nsim) == 1 && (nsim >= 0)))
+	{
+		stop("nsim must be a nonnegative value")
+	}
+
+	if(nsim >= 1)
+	{
+		if(!(is.vector(Ve.diag) && length(Ve.diag) == n && min(Ve.diag) >= 0))
 		{
-			stop("coeff must be a numeric vector")
+			stop("Ve.diag must be a vector of length n with non-negative values")
 		}
-		if(length(coeff) > 1)
+		if(!(method == "eigen" || method == "chol" || method == "svd"))
 		{
-			if(length(coeff) != ncol(X))
-			{
-				stop("length(coeff) must equal ncol(X)")
-			}
+			stop("method must be 'eigen', 'chol', or 'svd'")
 		}
 	}
+	else
+	{
+		Ve.diag <- 1
+	}
+	
+	# change method to number for C++ function
+	if(method == "eigen"){ method <- 1 }
+	else if(method == "chol"){ method <- 2}
+	else{ method <- 3 }
+	
+	# change rws to number for C++ function
+	if(return.w == TRUE)
+	{
+		rws <- 1
+	}
+	else
+	{
+		rws <- 0
+	}
+	return(list(rws = rws, method = method, Ve.diag = Ve.diag))
 }
 
 krige_sk_arg_check <- function(y, V, Vp, Vop, m)
