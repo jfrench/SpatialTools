@@ -9,34 +9,37 @@ arma::mat decomp_V(arma::mat Va, int method)
     
 	arma::mat dV = arma::mat(na, na);
 	
-	if(method == 1){
-     arma::vec eigval = arma::vec(na);
-     arma::mat eigvec = arma::mat(na, na);
+	if(method == 1)
+    {
+        arma::vec eigval = arma::vec(na);
+        arma::mat eigvec = arma::mat(na, na);
      
-     //compute eigen values and vectors of V
-     eig_sym(eigval, eigvec, Va);
+        //compute eigen values and vectors of V
+        eig_sym(eigval, eigvec, Va);
      
-     for(int i = 0; i < eigval.n_rows; i++)
+        for(int i = 0; i < eigval.n_rows; i++)
+        {
+            if(eigval(i) < 0)
+            {
+                eigval(i) = 0;		
+            }
+        }
+     
+        dV = eigvec * diagmat(sqrt(eigval));
+     }
+     else if(method == 2)
      {
-     if(eigval(i) < 0)
+         dV = trans(arma::chol(Va));
+     }
+     else
      {
-     eigval(i) = 0;		
-     }
-     }
+         arma::mat U = arma::mat(na, na);
+         arma::mat U2 = arma::mat(na, na);
+         arma::vec sv = arma::vec(na);
      
-     dV = eigvec * diagmat(sqrt(eigval));
-     }
-     else if(method == 2){
-     dV = trans(chol(Va));
-     }
-     else{
-     arma::mat U = arma::mat(na, na);
-     arma::mat U2 = arma::mat(na, na);
-     arma::vec sv = arma::vec(na);
+         svd(U, sv, U2, Va);
      
-     svd(U, sv, U2, Va);
-     
-     dV = U * diagmat(sqrt(sv)) * trans(U2);
+         dV = U * diagmat(sqrt(sv)) * trans(U2);
      }
 
     return dV;    

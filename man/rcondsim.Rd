@@ -29,6 +29,10 @@
 An \eqn{n \times nsim} matrix containing the \code{nsim} realizations of the conditional realizations.  Each column of the matrix represents a realization of the conditional normal distribution.
 }
 
+\details{
+If doing conditional simulation, the Cholesky decomposition should not work when there are coincident locations between the observed data locations and the predicted data locations.    Both the Eigen and Singular Value Decompositions should work.
+}
+
 %\references{ R core development. "Writing R Extentions". 2007. } 
 
 \author{Joshua French} 

@@ -63,6 +63,7 @@ that there are \eqn{k} regression coefficients (including the intercept).
 Both \code{X} and \code{Xp} should contain a column of 1's if an intercept
 is desired.
 
+If doing conditional simulation, the Cholesky decomposition should not work when there are coincident locations between the observed data locations and the predicted data locations.    Both the Eigen and Singular Value Decompositions should work.
 }
 \references{ Statistical Methods for Spatial Data Analysis, Schabenberger and Gotway (2003).  See p. 241-243.} 
 
