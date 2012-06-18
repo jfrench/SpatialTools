@@ -1,5 +1,7 @@
 #Changes
 
+#0.4.1	Added check on rcondsim arguments.  Fixed small bug in maxlik.cov.st.
+
 #0.4.0	Added rcondsim to simulate from conditional distribution.
 	Added ability to simulate from conditional distribution
 	in krige.sk, krige.ok, and krige.uk.

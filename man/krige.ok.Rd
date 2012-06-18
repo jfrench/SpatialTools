@@ -83,9 +83,11 @@ y <- rmvnorm(nsim = 1, mu = rep(2, 50), V = C3$V) + rnorm(50, sd = sqrt(.5))
 
 # use universal kriging to make predictions.  Do not return weights matrix or do 
 # conditional simulation
-krige.obj <- krige.ok(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, return.w = FALSE, nsim = 0)
+krige.obj <- krige.ok(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, 
+	return.w = FALSE, nsim = 0)
 
 #Do return weights matrix and do conditional simulation
-krige.obj2 <- krige.ok(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, return.w = TRUE, nsim = 100, Ve.diag = rep(.5, 50), method = "eigen")
+krige.obj2 <- krige.ok(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, 
+	return.w = TRUE, nsim = 100, Ve.diag = rep(.5, 50), method = "eigen")
 
 }

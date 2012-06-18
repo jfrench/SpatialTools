@@ -65,9 +65,11 @@ coeff <- matrix(c(1, 2, 3), nrow = 1)
 y <- rmvnorm(nsim = 1, mu = tcrossprod(X, coeff), V = C3$V) + rnorm(50, sd = sqrt(.5))
 
 # use universal kriging to make predictions
-krige.obj <- krige.uk(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, X = X, Xp = Xa, return.w = TRUE)
+krige.obj <- krige.uk(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, 
+	X = X, Xp = Xa, return.w = TRUE)
 
 # generate conditional simulations of observations
-mycondsim <- rcondsim(nsim = 100, krige.obj = krige.obj, y = as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, 
+mycondsim <- rcondsim(nsim = 100, krige.obj = krige.obj, y = as.vector(y), 
+	V = C3$V, Vp = C3$Vp, Vop = C3$Vop, 
 	Ve.diag = rep(.5, 50), method = "eigen")
 }

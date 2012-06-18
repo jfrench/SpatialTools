@@ -175,7 +175,7 @@ maxlik.cov.sp <- function(X, y, coords, sp.type = "exponential",
 	if(sp.type == "matern"){ parms <- c(parms, smoothness) }
 
 	#define lower and upper bounds if not supplied by user
-	bounds <- bounds.cov.sp(sp.type, range.par, error.ratio, smoothness)
+	bounds <- bounds.cov.sp(sp.type)
 	if(is.null(lower)){ lower <- bounds$lower.bound }
 	if(is.null(upper)){ upper <- bounds$upper.bound	}
 
@@ -272,9 +272,14 @@ maxlik.cov.st <- function(X, y, coords, time, sp.type = "exponential",
 	smoothness = 0.5, t.type = "ar1", t.par = .5, D = NULL, T = NULL, 
 	reml = TRUE, lower = NULL, upper = NULL, control = list(TRACE = TRUE), optimizer="nlminb")
 {
+	y <- as.vector(y)
+	maxlik_cov_st_check_arg(X = X, y = y, coords = coords, time = time, 
+		sp.type = sp.type, range.par = range.par, error.ratio = error.ratio, 
+		smoothness = smoothness, t.type = t.type, 
+		D = D, T = T, reml = reml, lower = lower, upper = upper)
+
 	if(is.null(D)){ D <- dist1(coords) }
 	if(is.null(T)){ T <- dist1(matrix(time)) }
-
 
 	#construct vector of initial parameters to pass to objective function
 	parms <- c(range.par, error.ratio)
@@ -283,9 +288,11 @@ maxlik.cov.st <- function(X, y, coords, time, sp.type = "exponential",
 	parms <- c(parms, t.par)
 
 	#define lower and upper bounds if not supplied by user
-	bounds <- bounds.cov.sp(sp.type, range.par, error.ratio, smoothness)
-	if(is.null(lower)){ lower <- c(bounds$lower.bound, 0) }
-	if(is.null(upper)){ upper <- c(bounds$upper.bound, .999) }
+	bounds <- bounds.cov.sp(sp.type)
+	if(is.null(lower)){ lower <- bounds$lower.bound }
+	if(is.null(upper)){ upper <- bounds$upper.bound }
+	lower <- c(lower, 0)
+	upper <- c(upper, .999)
 
 	if(optimizer=="nlminb")
 	{
@@ -293,8 +300,8 @@ maxlik.cov.st <- function(X, y, coords, time, sp.type = "exponential",
 			objective = logLik.cov.st, X=X, y=y, D=D,
 			sp.type = sp.type, t.type = t.type, T=T, 
 			reml=reml, minus2 = TRUE, 
-			lower=lower, upper=upper, 
-			control = list(trace = TRUE))
+			lower=lower, upper=upper)#, 
+#			control = list(trace = TRUE))
 			
 		range.par <- min.out$par[1]
 		error.ratio <- min.out$par[2]
@@ -315,13 +322,13 @@ maxlik.cov.st <- function(X, y, coords, time, sp.type = "exponential",
 	
 	V <- V.sp * V.time + diag(nrow(V.sp)) * error.ratio
 
+	n <- length(y)
 	ViX <- solve(V, X)
 	XtViX <- crossprod(ViX, X)
 	fitted <- X %*% solve(XtViX, crossprod(ViX, y))
 	r <- y - fitted
-	df.resid <- nrow(y) - ncol(X)
+	df.resid <- n - ncol(X)
 	rtVir <- crossprod(r, solve(V,r))
-	n <- length(y)
 
 	if(!reml)
 	{
@@ -369,7 +376,7 @@ logLik.cov.st <- function(par, X, y, D, T, sp.type, t.type, reml = FALSE, minus2
 	XtViX <- crossprod(ViX, X)
 	fitted <- X %*% solve(XtViX, crossprod(ViX, y))
 	r <- y - fitted
-	n <- nrow(y)
+	n <- length(y)
 	df.resid <- n - ncol(X)
 	rtVir <- crossprod(r, solve(V,r))
 
@@ -395,7 +402,7 @@ logLik.cov.st <- function(par, X, y, D, T, sp.type, t.type, reml = FALSE, minus2
 	return(lik[1,1])
 }
 
-bounds.cov.sp <- function(sp.type, range.par, error.ratio, smoothness)
+bounds.cov.sp <- function(sp.type)
 {
 	lower <- c(.001, 0)
 	upper <- c(Inf, 1)

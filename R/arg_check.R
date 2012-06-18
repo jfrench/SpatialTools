@@ -14,13 +14,11 @@ cov_sp_arg_check <- function(coords, sp.type, sp.par,
 	if(length(sp.par) != 2){ stop("sp.par must be a numeric vector of length 2") }
 	if(!(min(sp.par) > 0)){ stop("sp.par must have positive elements") }
 
-
 	#check error.var argument
 	if(!is.numeric(error.var)){ stop("error.var must be a numeric vector of length 1") }
 	if(!is.vector(error.var)){ stop("error.var must be a numeric vector of length 1") }
 	if(length(error.var) > 1){ stop("error.var must be a numeric vector of length 1") }
 	if(min(error.var) < 0){ stop("error.var must be non-negative") }
-
 
 	#check smoothness argument
 	if(!is.numeric(smoothness)){ stop("smoothness must be a numeric vector of length 1") }
@@ -291,6 +289,47 @@ maxlik_cov_sp_check_arg <- function(X, y, coords, sp.type,
 			stop("If supplied, D must be a numeric matrix") 
 		}
 	}
+	if(!is.logical(reml)){ stop("reml must be a logical value") }
+	if(!is.null(lower))
+	{
+		if(!is.numeric(lower)){ stop("lower must be a numeric vector")} 
+	}
+	if(!is.null(upper))
+	{
+		if(!is.numeric(upper)){ stop("upper must be a numeric vector")} 
+	}
+	if(!is.null(lower) && !is.null(upper))
+	{
+		if(length(lower) != length(upper)){ stop("lower and upper should have the same length") }
+	}
+}
+
+maxlik_cov_st_check_arg <- function(X, y, coords, time = time, sp.type, 
+	range.par, error.ratio, smoothness, t.type = "ar1", D, T, reml, lower, upper)
+{
+	if(!is.numeric(X) || !is.matrix(X)){ stop("X must be a numeric matrix") }
+	if(!is.numeric(y)){ stop("y must be numeric") }
+	if(!is.numeric(coords) || !is.numeric(coords)){ stop("coords must be a numeric matrix") }
+	if(!valid_sp_type(sp.type)){ stop("specified sp.type is not a valid covariance type") }
+	if(!(range.par > 0)){ stop("range.par must be positive") }
+	if(!(error.ratio >= 0)){ stop("range.par must be non-negative") }
+	if(!(smoothness > 0)){ stop("smoothness must be positive") }
+	if(t.type != "ar1"){ stop("ar1 is the only valid option for t.type") }
+	if(!is.null(D))
+	{
+		if(!is.numeric(D) || !is.matrix(D))
+		{ 
+			stop("If supplied, D must be a numeric matrix") 
+		}
+	}
+	if(!is.null(T))
+	{
+		if(!is.numeric(T) || !is.matrix(T))
+		{ 
+			stop("If supplied, T must be a numeric matrix") 
+		}
+	}
+
 	if(!is.logical(reml)){ stop("reml must be a logical value") }
 	if(!is.null(lower))
 	{

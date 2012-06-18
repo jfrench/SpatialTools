@@ -14,6 +14,10 @@ rmvnorm <- function(nsim = 1, mu, V, method = "eigen")
 
 rcondsim <- function(nsim = 1, krige.obj, y, V, Vp, Vop, Ve.diag, method = "eigen")
 {
+	# check arguments
+	rcondsim_arg_check(nsim = nsim, y = y, V = V, Vp = Vp, 
+		Vop = Vop, Ve.diag = Ve.diag, method = method, krige.obj = krige.obj)
+	
 	# determine number of observed and predicted data values
 	n <- nrow(V); np <- nrow(Vp)
 
