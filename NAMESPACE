@@ -11,9 +11,9 @@ export(decomp.cov)
 export(maxlik.cov.sp)
 export(maxlik.cov.st)
 
-export(condnorm.par)
+#export(condnorm.par)
 export(rmvnorm)
-export(rcondsim)
+#export(rcondsim)
 
 export(krige.uk)
 export(pweights.uk)

@@ -1,5 +1,7 @@
 #Changes
 
+#0.4.2	Removed rcondsim and condsim.par functions.  Removed ability to return weight matrix from krige.uk, krige.ok, krige.sk.
+
 #0.4.1	Added check on rcondsim arguments.  Fixed small bug in maxlik.cov.st.
 
 #0.4.0	Added rcondsim to simulate from conditional distribution.

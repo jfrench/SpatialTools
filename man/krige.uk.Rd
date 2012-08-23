@@ -20,8 +20,7 @@
 } 
 
 \usage{
-	krige.uk(y, V, Vp, Vop, X, Xp, return.w = FALSE, nsim = 0, 
-	Ve.diag = NULL, method = "eigen")
+	krige.uk(y, V, Vp, Vop, X, Xp, nsim = 0, Ve.diag = NULL, method = "eigen")
 } 
 
 \arguments{
@@ -33,7 +32,6 @@
 	\item{X}{The design matrix of the observed data.  The size is \eqn{n \times k}} 
 	\item{Xp}{The design matrix of the responses to be predicted.  
 		The size is \eqn{np \times k}}.
-	\item{return.w}{A boolean value (TRUE or FALSE) indicating whether the matrix of prediction weights should be returned.  By default, this is FALSE (and results in faster computation since there is less to return).}
 	\item{nsim}{A non-negative value indicating the number of conditional simulations that should be returned.  If this is less than 1, then no conditional simulation is done.}
 	\item{Ve.diag}{A vector of length n specifying the measurement error variances of the observed data.} 
 	\item{method}{A character vector specifying the method used to decompose \code{V}.  Options are "eigen", "chol", or "svd" (Eigen decomposition, Cholesky decomposition, or Singular value decomposition, respectively).} 
@@ -50,8 +48,6 @@ The function a list containing the following objects:
 		regression coefficients.} 
 	\item{vcov.coeff}{A \eqn{k \times k} matrix containing the
 	(estimated) covariance matrix of estimated the regression coefficients.} 
-	\item{w}{A \eqn{np \times n} matrix containing the kriging
-		weights used to calculate \code{pred}.} 
 	\item{simulations}{An \eqn{n \times nsim} matrix containing the \code{nsim} realizations of the conditional realizations.  Each column of the matrix represents a realization of the conditional normal distribution.}
 }
 
@@ -95,13 +91,13 @@ coeff <- matrix(c(1, 2, 3), nrow = 1)
 # generate data with error
 y <- rmvnorm(nsim = 1, mu = tcrossprod(X, coeff), V = C3$V) + rnorm(50, sd = sqrt(.5))
 
-# use universal kriging to make predictions.  Do not return weights matrix or do 
+# use universal kriging to make predictions.  Do not do 
 # conditional simulation
 krige.obj <- krige.uk(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, 
-	X = X, Xp = Xa, return.w = FALSE, nsim = 0)
+	X = X, Xp = Xa, nsim = 0)
 
-#Do return weights matrix and do conditional simulation
+#Do conditional simulation
 krige.obj2 <- krige.uk(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, 
-	X = X, Xp = Xa, return.w = TRUE, nsim = 100, 
+	X = X, Xp = Xa, nsim = 100, 
 	Ve.diag = rep(.5, 50), method = "eigen")
 }

@@ -19,8 +19,7 @@
 } 
 
 \usage{
-	krige.sk(y, V, Vp, Vop, m = 0, return.w = FALSE, nsim = 0, 
-	Ve.diag = NULL, method = "eigen")
+	krige.sk(y, V, Vp, Vop, m = 0, nsim = 0, Ve.diag = NULL, method = "eigen")
 } 
 
 \arguments{
@@ -35,7 +34,6 @@
 		and the responses to be predicted.  The size is 
 		\eqn{n \times np}.} 
   \item{m}{A numeric vector of length 1 giving the mean of each response.}
-	\item{return.w}{A boolean value (TRUE or FALSE) indicating whether the matrix of prediction weights should be returned.  By default, this is FALSE (and results in faster computation since there is less to return).}
 	\item{nsim}{A non-negative value indicating the number of conditional simulations that should be returned.  If this is less than 1, then no conditional simulation is done.}
 	\item{Ve.diag}{A vector of length n specifying the measurement error variances of the observed data.} 
 	\item{method}{A character vector specifying the method used to decompose \code{V}.  Options are "eigen", "chol", or "svd" (Eigen decomposition, Cholesky decomposition, or Singular value decomposition, respectively).} 
@@ -48,8 +46,6 @@ The function a list containing the following objects:
 	\item{mspe}{A vector of length \eqn{np} containing the 
 		mean-square prediction error of the predicted
 		responses.}
-	\item{w}{A \eqn{np \times n} matrix containing the kriging
-		weights used to calculate red.}
 	\item{simulations}{An \eqn{n \times nsim} matrix containing the \code{nsim} realizations of the conditional realizations.  Each column of the matrix represents a realization of the conditional normal distribution.}
 	\item{mean}{The mean value (m) originally provided to the function}.  
 }

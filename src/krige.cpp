@@ -4,7 +4,7 @@
 using namespace Rcpp;
 using namespace arma;
 
-SEXP krige_uk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP Xs, SEXP Xps, SEXP rws, SEXP nsims, 
+SEXP krige_uk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP Xs, SEXP Xps, SEXP nsims, 
 	SEXP Vediags, SEXP methods){
 	
 	//Set up data frame
@@ -26,8 +26,6 @@ SEXP krige_uk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP Xs, SEXP Xps, SEXP rws
 	NumericMatrix Xpr(Xps);
 	arma::mat Xp(Xpr.begin(), Xpr.nrow(), Xpr.ncol(), false);
 
-	int rw = as<int>(rws);
-
 	int nsim = as<int>(nsims);
 
 	NumericVector Vediagr(Vediags);
@@ -35,9 +33,6 @@ SEXP krige_uk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP Xs, SEXP Xps, SEXP rws
 
 	int method = as<int>(methods);
 
-	//int n = y.n_elem;
-	//int np = Vp.n_cols;
-	
 	//compute useful matrices
 	arma::mat ViX = solve(V, X);
 	arma::mat XtViX = trans(X) * ViX;
@@ -60,22 +55,10 @@ SEXP krige_uk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP Xs, SEXP Xps, SEXP rws
 	//If nsim = 0, then don't do conditional simulation
 	if(nsim == 0)
 	{
-		//If rw = 0 (return.w = 0), then don't return w, otherwise do
-		if(rw == 0)
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
-									Rcpp::Named("mspe") = mspe,
-									Rcpp::Named("coeff") = coeff,
-									Rcpp::Named("vcov.coeff") = vcov_coef);		
-		}
-		else
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+		return Rcpp::List::create(Rcpp::Named("pred") = pred,
 								Rcpp::Named("mspe") = mspe,
 								Rcpp::Named("coeff") = coeff,
-								Rcpp::Named("vcov.coeff") = vcov_coef,
-								Rcpp::Named("w") = w);		
-		}
+								Rcpp::Named("vcov.coeff") = vcov_coef);		
 	}
 	else // Do conditional simulation
 	{
@@ -94,29 +77,16 @@ SEXP krige_uk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP Xs, SEXP Xps, SEXP rws
 
 		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method, 0);
 
-		// If rw = 0 (return.w = 0), then don't return w, otherwise do (along with
-		// the conditional simulation
-		if(rw == 0)
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
-									Rcpp::Named("mspe") = mspe,
-									Rcpp::Named("coeff") = coeff,
-									Rcpp::Named("vcov.coeff") = vcov_coef,
-									Rcpp::Named("simulations") = simulations);		
-		}
-		else
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+		return Rcpp::List::create(Rcpp::Named("pred") = pred,
 								Rcpp::Named("mspe") = mspe,
 								Rcpp::Named("coeff") = coeff,
 								Rcpp::Named("vcov.coeff") = vcov_coef,
 								Rcpp::Named("w") = w,
 								Rcpp::Named("simulations") = simulations);		
-		}
 	}
 }
 
-SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms, SEXP rws, SEXP nsims, 
+SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms, SEXP nsims, 
 	SEXP Vediags, SEXP methods){
     
     NumericVector yr(ys);
@@ -134,17 +104,12 @@ SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms, SEXP rws, SEXP nsi
     NumericVector mr(ms);
     double m = mr[0]; 
     
-	int rw = as<int>(rws);
-
 	int nsim = as<int>(nsims);
 
 	NumericVector Vediagr(Vediags);
 	arma::colvec Vediag(Vediagr.begin(), Vediagr.size(), false);
 
 	int method = as<int>(methods);
-
-	//int n = y.n_elem;
-	//int np = Vp.n_cols;
 
     //compute kriging weights
     //R version: w <- solve(V, Vop)
@@ -161,22 +126,9 @@ SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms, SEXP rws, SEXP nsi
 	//If nsim = 0, then don't do conditional simulation
 	if(nsim == 0)
 	{
-		//If rw = 0 (return.w = 0), then don't return w, otherwise do
-		if(rw == 0)
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
-									Rcpp::Named("mspe") = mspe,
-	                        		Rcpp::Named("mean") = m
-                             		);		
-		}
-		else
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+		return Rcpp::List::create(Rcpp::Named("pred") = pred,
 								Rcpp::Named("mspe") = mspe,
-								Rcpp::Named("w") = w,
-                              	Rcpp::Named("mean") = m
-                              	);		
-		}
+                        		Rcpp::Named("mean") = m);		
 	}
 	else // Do conditional simulation
 	{
@@ -195,29 +147,15 @@ SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms, SEXP rws, SEXP nsi
 
 		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method, m);
 
-		// If rw = 0 (return.w = 0), then don't return w, otherwise do (along with
-		// the conditional simulation
-		if(rw == 0)
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
-									Rcpp::Named("mspe") = mspe,
-									Rcpp::Named("simulations") = simulations,
-	                                Rcpp::Named("mean") = m
-      		                        );		
-		}
-		else
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+		return Rcpp::List::create(Rcpp::Named("pred") = pred,
 								Rcpp::Named("mspe") = mspe,
-								Rcpp::Named("w") = w,
 								Rcpp::Named("simulations") = simulations,
                                 Rcpp::Named("mean") = m
-                                );		
-		}
+   		                        );		
 	}
 }
 
-SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP rws, SEXP nsims, 
+SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP nsims, 
 	SEXP Vediags, SEXP methods){
 	
 	//Set up data frame
@@ -233,8 +171,6 @@ SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP rws, SEXP nsims,
 	NumericMatrix Vopr(Vops);
 	arma::mat Vop(Vopr.begin(), Vopr.nrow(), Vopr.ncol(), false);
 	
-	int rw = as<int>(rws);
-
 	int nsim = as<int>(nsims);
 
 	NumericVector Vediagr(Vediags);
@@ -242,9 +178,7 @@ SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP rws, SEXP nsims,
 
 	int method = as<int>(methods);
 
-	//int n = y.n_elem;
-	//int np = Vp.n_cols;
-   
+  
     arma::colvec X = arma::ones(yr.size());
     
     //compute useful matrices.  Some expressions simply because X is a vector of 1s
@@ -272,22 +206,10 @@ SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP rws, SEXP nsims,
 	//If nsim = 0, then don't do conditional simulation
 	if(nsim == 0)
 	{
-		//If rw = 0 (return.w = 0), then don't return w, otherwise do
-		if(rw == 0)
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
-									Rcpp::Named("mspe") = mspe,
-									Rcpp::Named("coeff") = coeff,
-									Rcpp::Named("vcov.coeff") = vcov_coef);		
-		}
-		else
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+		return Rcpp::List::create(Rcpp::Named("pred") = pred,
 								Rcpp::Named("mspe") = mspe,
 								Rcpp::Named("coeff") = coeff,
-								Rcpp::Named("vcov.coeff") = vcov_coef,
-								Rcpp::Named("w") = w);		
-		}
+								Rcpp::Named("vcov.coeff") = vcov_coef);		
 	}
 	else // Do conditional simulation
 	{
@@ -306,25 +228,11 @@ SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP rws, SEXP nsims,
 
 		arma::mat simulations = rcondsim(nsim, y, w, Vediag, dV, method, 0);
 
-		// If rw = 0 (return.w = 0), then don't return w, otherwise do (along with
-		// the conditional simulation
-		if(rw == 0)
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
-									Rcpp::Named("mspe") = mspe,
-									Rcpp::Named("coeff") = coeff,
-									Rcpp::Named("vcov.coeff") = vcov_coef,
-									Rcpp::Named("simulations") = simulations);		
-		}
-		else
-		{
-			return Rcpp::List::create(Rcpp::Named("pred") = pred,
+		return Rcpp::List::create(Rcpp::Named("pred") = pred,
 								Rcpp::Named("mspe") = mspe,
 								Rcpp::Named("coeff") = coeff,
 								Rcpp::Named("vcov.coeff") = vcov_coef,
-								Rcpp::Named("w") = w,
 								Rcpp::Named("simulations") = simulations);		
-		}
 	}
 }
 

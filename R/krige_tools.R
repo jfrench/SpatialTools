@@ -1,11 +1,10 @@
-krige.uk <- function(y, V, Vp, Vop, X, Xp, return.w = FALSE, nsim = 0, 
-	Ve.diag = NULL, method = "eigen")
+krige.uk <- function(y, V, Vp, Vop, X, Xp, nsim = 0, Ve.diag = NULL, method = "eigen")
 {
 	# check arguments, create appropriate values of rws and method for .Call
-	ins <- krige_arg_check(y, V, Vp, Vop, X, Xp, m = 0, return.w, nsim, Ve.diag, method)
+	ins <- krige_arg_check(y, V, Vp, Vop, X, Xp, m = 0, nsim, Ve.diag, method)
 
 	out <- .Call( "krige_uk", ys = y, Vs = V, Vps = Vp, Vops = Vop, Xs = X, Xps = Xp,
-		rws = ins$rws, nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
+		nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
 		PACKAGE = "SpatialTools")
 
 	#convert one-dimensional matrices to vectors
@@ -15,14 +14,13 @@ krige.uk <- function(y, V, Vp, Vop, X, Xp, return.w = FALSE, nsim = 0,
 	return(out)
 }
 
-krige.ok <- function(y, V, Vp, Vop, return.w = FALSE, nsim = 0, 
-	Ve.diag = NULL, method = "eigen")
+krige.ok <- function(y, V, Vp, Vop, nsim = 0, Ve.diag = NULL, method = "eigen")
 {
 	# check arguments, create appropriate values of rws and method for .Call
-	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, return.w, nsim, Ve.diag, method)
+	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, nsim, Ve.diag, method)
 
 	out <- .Call( "krige_ok", ys = y, Vs = V, Vps = Vp, Vops = Vop, 
-		rws = ins$rws, nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
+		nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
 		PACKAGE = "SpatialTools")
 
 	#convert one-dimensional matrices to vectors
@@ -32,14 +30,13 @@ krige.ok <- function(y, V, Vp, Vop, return.w = FALSE, nsim = 0,
 	return(out)
 }
 
-krige.sk <- function(y, V, Vp, Vop, m = 0, return.w = FALSE, nsim = 0, 
-	Ve.diag = NULL, method = "eigen")
+krige.sk <- function(y, V, Vp, Vop, m = 0, nsim = 0, Ve.diag = NULL, method = "eigen")
 {
 	# check arguments, create appropriate values of rws and method for .Call
-	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, return.w, nsim, Ve.diag, method)
+	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, nsim, Ve.diag, method)
 
 	out <- .Call( "krige_sk", ys = y, Vs = V, Vps = Vp, Vops = Vop, ms = m, 
-		rws = ins$rws, nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
+		nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
 		PACKAGE = "SpatialTools")
 	
 	#convert one-dimensional matrices to vectors

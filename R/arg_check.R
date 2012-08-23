@@ -345,7 +345,7 @@ maxlik_cov_st_check_arg <- function(X, y, coords, time = time, sp.type,
 	}
 }
 
-krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m, return.w, nsim, Ve.diag, method)
+krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m, nsim, Ve.diag, method)
 {
 
 	if(!is.numeric(y))
@@ -413,15 +413,6 @@ krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m, return.w, nsim, Ve.diag, me
 		stop("m must be a numeric vector of length 1")
 	}
 
-	if(length(return.w) != 1)
-	{
-		stop("return.w must be TRUE or FALSE")
-	}
-	if(!((return.w == TRUE) || (return.w == FALSE)))
-	{
-		stop("return.w must be TRUE or FALSE")
-	}
-
 	if(!(is.numeric(nsim) && length(nsim) == 1 && (nsim >= 0)))
 	{
 		stop("nsim must be a nonnegative value")
@@ -448,58 +439,7 @@ krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m, return.w, nsim, Ve.diag, me
 	else if(method == "chol"){ method <- 2}
 	else{ method <- 3 }
 	
-	# change rws to number for C++ function
-	if(return.w == TRUE)
-	{
-		rws <- 1
-	}
-	else
-	{
-		rws <- 0
-	}
-	return(list(rws = rws, method = method, Ve.diag = Ve.diag))
-}
-
-krige_sk_arg_check <- function(y, V, Vp, Vop, m)
-{
-	n <- length(y)
-
-	if(!is.numeric(y))
-	{
-		stop("y must be a numeric vector")
-	}
-	if(!is.matrix(V) || !is.numeric(V) || (nrow(V)!= ncol(V)))
-	{
-		stop("V must be a square numeric matrix")
-	}
-	if(length(y) != nrow(V))
-	{
-		stop("length(y) must equal nrow(V)")
-	}
-	if(!is.matrix(Vp) || !is.numeric(Vp) || (nrow(Vp)!= ncol(Vp)))
-	{
-		stop("Vp must be a square numeric matrix")
-	}
-	if(!is.matrix(Vop) || !is.numeric(Vop))
-	{
-		stop("Vop must be a numeric matrix")
-	}
-	if(length(y) != nrow(Vop))
-	{
-		stop("length(y) must equal nrow(Vop)")
-	}
-	if(ncol(Vp) != ncol(Vop))
-	{
-		stop("ncol(Vp) must equal ncol(Vop)")
-	}
-	if(!is.numeric(m))
-	{
-		stop("m must be a numeric vector")
-	}
-	if(length(m)!=1)
-	{
-		stop("m must have length 1")
-	}
+	return(list(method = method, Ve.diag = Ve.diag))
 }
 
 pweights_uk_arg_check <- function(X, V, Xp, Vp, Vop)
