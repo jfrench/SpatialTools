@@ -9,7 +9,8 @@ dist1 <- function(coords)
 	
 	nr <- nrow(coords)
 	matrix(.C("dist1", x = as.double(coords), nc = as.integer(ncol(coords)), 
-		nr = as.integer(nr), d = as.double(numeric(nr^2)))$d, nrow = nr)
+		nr = as.integer(nr), 
+		d = as.double(numeric(nr^2)), PACKAGE = "SpatialTools")$d, nrow = nr)
 }
 
 #Fast C function for Euclidian distance between two pairs of matrices.
@@ -37,7 +38,7 @@ dist2 <- function(coords1, coords2)
 	matrix(.C("dist2", x1 = as.double(coords1), x2 = as.double(coords2), 
 		nc = as.integer(ncol(coords1)), nr1 = as.integer(nr1), 
 		nr2 = as.integer(nr2), 
-		d = as.double(numeric(nr1*nr2)))$d, nrow = nr1)
+		d = as.double(numeric(nr1*nr2)), PACKAGE = "SpatialTools")$d, nrow = nr1)
 }
 
 #Function to determine coincident locations
