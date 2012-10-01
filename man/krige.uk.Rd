@@ -16,7 +16,7 @@
 	\eqn{np \times np}
 	covariance matrix of the responses to be predicted, and \code{Vop}, 
 	the \eqn{n \times np} matrix of covariances between the observed 
-	responses and the responses to be predicted.  Uses Armadillo C++ template via RcppArmadillo to perform most of the operations.
+	responses and the responses to be predicted.
 } 
 
 \usage{
@@ -33,8 +33,8 @@
 	\item{Xp}{The design matrix of the responses to be predicted.  
 		The size is \eqn{np \times k}}.
 	\item{nsim}{A non-negative value indicating the number of conditional simulations that should be returned.  If this is less than 1, then no conditional simulation is done.}
-	\item{Ve.diag}{A vector of length n specifying the measurement error variances of the observed data.} 
-	\item{method}{A character vector specifying the method used to decompose \code{V}.  Options are "eigen", "chol", or "svd" (Eigen decomposition, Cholesky decomposition, or Singular value decomposition, respectively).} 
+	\item{Ve.diag}{A vector of length \eqn{n} specifying the measurement error variances of the observed data.  This information is only used for conditional simulation, so this argument is only needed when \code{nsim} > 0.} 
+	\item{method}{A character vector specifying the method used to decompose \code{V}.  Options are "eigen", "chol", or "svd" (Eigen decomposition, Cholesky decomposition, or Singular value decomposition, respectively).  This information is only used for conditional simulation, so this argument is only applicable when \code{nsim} > 0.} 
 } 
 
 \value{
