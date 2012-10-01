@@ -1,5 +1,7 @@
 #Changes
 
+#0.4.3 Changed krige.uk to pure R (with little change in speed).  Updated distance functions to reference namespace to improve compatibility with old versions of R.
+
 #0.4.2	Removed rcondsim and condsim.par functions.  Removed ability to return weight matrix from krige.uk, krige.ok, krige.sk.
 
 #0.4.1	Added check on rcondsim arguments.  Fixed small bug in maxlik.cov.st.

@@ -1,31 +1,19 @@
-#krige.uk2 <- function(X, y, V, Xp, Vp, Vop)
-#{
-#
-#	###compute matrix products for future use
-#	#compute Vi*X
-#	ViX <- solve(V, X)
-#	#compute X'*Vi*X
-#	XtViX <- crossprod(ViX, X)
-#	
-#	#compute gls estimates of regression coefficients
-#	coef <- solve(XtViX, crossprod(ViX, y))
-#
-#	#compute kriging weights
-#	w <- solve(V, Vop - X%*%solve(XtViX, crossprod(X, solve(V, Vop)) - t(Xp)))
-#
-#	#blup for Yp
-#	pred <- crossprod(w, y)
-#	
-#	#variance of (Yp - pred)
-#	mspe <- colSums((V %*% w) * w) - 2 * colSums(w * Vop) + diag(Vp)
-#
-#	out <- list(pred = pred, mspe = mspe, w = w, coef = coef, 
-#		vcov.coef = solve(XtViX))
-#
-#	class(out) <- "uk"
-#	class(out) <- "krige"
-#	return(out)
-#}
+# Old RcppArmadillo version.  Updated to pure R in 0.4.3.
+# krige.uk <- function(y, V, Vp, Vop, X, Xp, nsim = 0, Ve.diag = NULL, method = "eigen")
+# {
+# 	# check arguments, create appropriate values of rws and method for .Call
+# 	ins <- krige_arg_check(y, V, Vp, Vop, X, Xp, m = 0, nsim, Ve.diag, method)
+# 
+# 	out <- .Call( "krige_uk", ys = y, Vs = V, Vps = Vp, Vops = Vop, Xs = X, Xps = Xp,
+# 		nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
+# 		PACKAGE = "SpatialTools")
+# 
+# 	#convert one-dimensional matrices to vectors
+# 	out$pred <- as.vector(out$pred)	
+# 	out$mspe <- as.vector(out$mspe)
+# 	out$coeff <- as.vector(out$coeff)
+# 	return(out)
+# }
 
 # krige.sk2 <- function(y, V, Vp, Vop, m = 0)
 # {
