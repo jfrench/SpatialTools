@@ -1,12 +1,19 @@
-krige.uk <- function(y, V, Vp, Vop, X, Xp, nsim = 0, Ve.diag = NULL, method = "eigen")
+krige.uk <- function(y, V, Vp, Vop, X, Xp, ...)
 {
-	# check arguments
-	ins <- krige_arg_check(y, V, Vp, Vop, X, Xp, m = 0, nsim, Ve.diag, method)
+	# Check arguments.  Create unspecified arguments if needed.
+	nsim <- 0; Ve.diag <- NULL; method <- "eigen"; level <- NULL; alternative <- NULL
+	arglist <- list(...)
+	argnames <- names(arglist)
+	if("nsim" %in% argnames){ nsim <- arglist$nsim }
+	if("Ve.diag" %in% argnames){ Ve.diag <- arglist$Ve.diag }
+	if("method" %in% argnames){ method <- arglist$method }
+	if("level" %in% argnames){ level <- arglist$level }
+	if("alternative" %in% argnames){ alternative <- arglist$alternative }
+	ins <- krige_arg_check(y, V, Vp, Vop, X, Xp, m = 0, nsim, Ve.diag, method, 
+		level, alternative)
 
 	###compute matrix products for future use
-	#compute Vi*X
 	ViX <- solve(V, X)
-	#compute X'*Vi*X
 	XtViX <- crossprod(ViX, X)
 	
 	#compute gls estimates of regression coefficients
@@ -15,15 +22,16 @@ krige.uk <- function(y, V, Vp, Vop, X, Xp, nsim = 0, Ve.diag = NULL, method = "e
 	#compute kriging weights
 	w <- solve(V, Vop - X%*%solve(XtViX, crossprod(X, solve(V, Vop)) - t(Xp)))
 
-	#blup for Yp
+	#blup for yp
 	pred <- crossprod(w, y)
 	
-	#variance of (Yp - pred)
+	#variance of (yp - pred)
 	mspe <- colSums((V %*% w) * w) - 2 * colSums(w * Vop) + diag(Vp)
 
 	out <- list(pred = pred, mspe = mspe, coeff = coeff, 
 		vcov.coef = solve(XtViX))
 
+	# generate conditional realizations if nsim > 0
 	if(nsim > 0)
 	{
 		# determine number of observed and predicted data values
@@ -46,7 +54,9 @@ krige.uk <- function(y, V, Vp, Vop, X, Xp, nsim = 0, Ve.diag = NULL, method = "e
 			matrix(rnorm(n * nsim, sd = sqrt(Ve.diag)), nrow = n, ncol = nsim)
 	
 		# Create conditional realizations
-		out$simulations <- newsim[-(1:n),] + crossprod(w, newZ)
+		sim <- newsim[-(1:n),] + crossprod(w, newZ)
+		
+		out$sim <- sim
 	}
 	return(out)
 }

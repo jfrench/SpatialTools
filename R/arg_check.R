@@ -345,7 +345,8 @@ maxlik_cov_st_check_arg <- function(X, y, coords, time = time, sp.type,
 	}
 }
 
-krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m, nsim, Ve.diag, method)
+krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m, 
+	nsim, Ve.diag, method, level, alternative)
 {
 
 	if(!is.numeric(y))
@@ -422,7 +423,7 @@ krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m, nsim, Ve.diag, method)
 	{
 		if(!(is.vector(Ve.diag) && length(Ve.diag) == n && min(Ve.diag) >= 0))
 		{
-			stop("Ve.diag must be a vector of length n with non-negative values")
+			stop("Ve.diag must be a vector of length(y) with non-negative values")
 		}
 		if(!(method == "eigen" || method == "chol" || method == "svd"))
 		{
@@ -439,6 +440,37 @@ krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m, nsim, Ve.diag, method)
 	else if(method == "chol"){ method <- 2}
 	else{ method <- 3 }
 	
+	if(!is.null(level))
+	{
+		if(is.null(alternative))
+		{
+			stop("alternative must be specified when u is non NULL")
+		}
+		if(is.null(nsim))
+		{
+			stop("nsim must be a positive integer when u is specified")
+		}
+		if(!is.numeric(level))
+		{
+			stop("u must be a numeric value")
+		}
+		if(length(level) > 1)
+		{
+			stop("u must be a vector of length 1")
+		}
+	}
+	if(!is.null(alternative))
+	{
+		if(is.null(level))
+		{
+			stop("level must be specified when alternative is not NULL")
+		}
+
+		if(!(alternative == "less" || alternative == "greater" || alternative == "two.sided"))
+		{
+			stop('alternative must equal "two.sided" or "less" or "greater"')
+		}
+	}
 	return(list(method = method, Ve.diag = Ve.diag))
 }
 

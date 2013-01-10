@@ -1,8 +1,8 @@
 Package: SpatialTools 
 Type: Package
-Title: SpatialTools
-Version: 0.4.3
-Date: 2012-09-05
+Title: Tools for spatial data analysis
+Version: 0.5.0
+Date: 2013-01-09
 Author: Joshua French <joshua.french@ucdenver.edu>
 Maintainer: Joshua French <joshua.french@ucdenver.edu>
 Depends: R (>= 2.12.0), Rcpp (>= 0.9.10), RcppArmadillo (>= 0.3.0)
