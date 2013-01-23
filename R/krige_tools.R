@@ -61,10 +61,19 @@ krige.uk <- function(y, V, Vp, Vop, X, Xp, ...)
 	return(out)
 }
 
-krige.ok <- function(y, V, Vp, Vop, nsim = 0, Ve.diag = NULL, method = "eigen")
+krige.ok <- function(y, V, Vp, Vop, ...)
 {
-	# check arguments, create appropriate values of rws and method for .Call
-	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, nsim, Ve.diag, method)
+	# Check arguments.  Create unspecified arguments if needed.
+	nsim <- 0; Ve.diag <- NULL; method <- "eigen"; level <- NULL; alternative <- NULL
+	arglist <- list(...)
+	argnames <- names(arglist)
+	if("nsim" %in% argnames){ nsim <- arglist$nsim }
+	if("Ve.diag" %in% argnames){ Ve.diag <- arglist$Ve.diag }
+	if("method" %in% argnames){ method <- arglist$method }
+	if("level" %in% argnames){ level <- arglist$level }
+	if("alternative" %in% argnames){ alternative <- arglist$alternative }
+	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, nsim, Ve.diag, method, 
+		level, alternative)
 
 	out <- .Call( "krige_ok", ys = y, Vs = V, Vps = Vp, Vops = Vop, 
 		nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 
@@ -77,10 +86,19 @@ krige.ok <- function(y, V, Vp, Vop, nsim = 0, Ve.diag = NULL, method = "eigen")
 	return(out)
 }
 
-krige.sk <- function(y, V, Vp, Vop, m = 0, nsim = 0, Ve.diag = NULL, method = "eigen")
+krige.sk <- function(y, V, Vp, Vop, m = 0, ...)
 {
-	# check arguments, create appropriate values of rws and method for .Call
-	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = 0, nsim, Ve.diag, method)
+	# Check arguments.  Create unspecified arguments if needed.
+	nsim <- 0; Ve.diag <- NULL; method <- "eigen"; level <- NULL; alternative <- NULL
+	arglist <- list(...)
+	argnames <- names(arglist)
+	if("nsim" %in% argnames){ nsim <- arglist$nsim }
+	if("Ve.diag" %in% argnames){ Ve.diag <- arglist$Ve.diag }
+	if("method" %in% argnames){ method <- arglist$method }
+	if("level" %in% argnames){ level <- arglist$level }
+	if("alternative" %in% argnames){ alternative <- arglist$alternative }
+	ins <- krige_arg_check(y, V, Vp, Vop, X = NULL, Xp = NULL, m = m, nsim, Ve.diag, method, 
+		level, alternative)
 
 	out <- .Call( "krige_sk", ys = y, Vs = V, Vps = Vp, Vops = Vop, ms = m, 
 		nsims = nsim, Vediags = ins$Ve.diag, method = ins$method, 

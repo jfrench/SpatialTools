@@ -9,3 +9,12 @@ get.contours=function(contours.list)
 	}
 	cbind(x,y)
 }
+
+#Plot contour lines from contourLines
+plot.contourLines <- function(x, begin=1, end = length(x), ...)
+{
+	for(i in begin:end)
+	{
+		lines(x[[i]]$x, x[[i]]$y, ...)
+	}
+}

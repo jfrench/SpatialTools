@@ -20,6 +20,7 @@ export(pweights.uk)
 export(mspe.uk)
 export(krige.ok)
 export(krige.sk)
+export(get.contours)
 
 #export(rmvnorm2)
 #export(condnorm.par2)

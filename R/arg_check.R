@@ -624,9 +624,10 @@ rmvnorm_arg_check <- function(nsim, mu, V, method)
 	{
 		stop("nsim, mu, and V arguments must all be numeric")
 	}
-	if(!isSymmetric(V) || !is.matrix(V))
+	#if(!isSymmetric(V) || !is.matrix(V))
+	if(!is.matrix(V))
 	{
-		stop("V must be a symmetrix matrix")
+		stop("V must be a symmetric matrix")
 	}
 	if(length(mu) != nrow(V))
 	{

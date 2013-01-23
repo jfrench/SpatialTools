@@ -7,7 +7,7 @@
 } 
 
 \description{
-	Performs Universal Kriging using \code{X}, the \eqn{n \times k} 
+	Performs universal kriging using \code{X}, the \eqn{n \times k} 
 	design matrix for the regression coefficients of the observed 
 	data, \code{y}, the \eqn{n \times 1} matrix of observed responses,
 	\code{V}, the (positive definite) covariance matrix of the 
@@ -20,7 +20,7 @@
 } 
 
 \usage{
-	krige.uk(y, V, Vp, Vop, X, Xp, nsim = 0, Ve.diag = NULL, method = "eigen")
+	krige.uk(y, V, Vp, Vop, X, Xp, ...)
 } 
 
 \arguments{
@@ -32,9 +32,7 @@
 	\item{X}{The design matrix of the observed data.  The size is \eqn{n \times k}} 
 	\item{Xp}{The design matrix of the responses to be predicted.  
 		The size is \eqn{np \times k}}.
-	\item{nsim}{A non-negative value indicating the number of conditional simulations that should be returned.  If this is less than 1, then no conditional simulation is done.}
-	\item{Ve.diag}{A vector of length \eqn{n} specifying the measurement error variances of the observed data.  This information is only used for conditional simulation, so this argument is only needed when \code{nsim} > 0.} 
-	\item{method}{A character vector specifying the method used to decompose \code{V}.  Options are "eigen", "chol", or "svd" (Eigen decomposition, Cholesky decomposition, or Singular value decomposition, respectively).  This information is only used for conditional simulation, so this argument is only applicable when \code{nsim} > 0.} 
+	\item{...}{Several additional arguments may be supplied.  If user specifies \code{nsim} to be a positive integer, then \code{nsim} conditional realizations of the predictive distribution will be generated.  If this is less than 1, then no conditional simulation is done.  If \code{nsim} is a positive integer, then \code{Ve.diag} must also be supplied.  \code{Ve.diag} is should be a vector of length \eqn{n} specifying the measurement error variances of the observed data.  This information is only used for conditional simulation, so this argument is only needed when \code{nsim} > 0.  When conditional simulation is desired, then the argument \code{method} can be to specify the method used to decompose \code{V}.  Options are "eigen", "chol", or "svd" (Eigen decomposition, Cholesky decomposition, or Singular value decomposition, respectively).  This information is only used for conditional simulation, so this argument is only applicable when \code{nsim} > 0.} 
 } 
 
 \value{
@@ -48,7 +46,7 @@ The function a list containing the following objects:
 		regression coefficients.} 
 	\item{vcov.coeff}{A \eqn{k \times k} matrix containing the
 	(estimated) covariance matrix of estimated the regression coefficients.} 
-	\item{simulations}{An \eqn{n \times nsim} matrix containing the \code{nsim} realizations of the conditional realizations.  Each column of the matrix represents a realization of the conditional normal distribution.}
+	\item{sim}{An \eqn{n \times nsim} matrix containing the \code{nsim} realizations of the conditional realizations.  Each column of the matrix represents a realization of the conditional normal distribution.}
 }
 
 \details{
@@ -96,7 +94,7 @@ y <- rmvnorm(nsim = 1, mu = tcrossprod(X, coeff), V = C3$V) + rnorm(50, sd = sqr
 krige.obj <- krige.uk(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, 
 	X = X, Xp = Xa, nsim = 0)
 
-#Do conditional simulation
+#Do kriging with conditional simulation
 krige.obj2 <- krige.uk(as.vector(y), V = C3$V, Vp = C3$Vp, Vop = C3$Vop, 
 	X = X, Xp = Xa, nsim = 100, 
 	Ve.diag = rep(.5, 50), method = "eigen")

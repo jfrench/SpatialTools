@@ -19,7 +19,7 @@
 } 
 
 \usage{
-	krige.sk(y, V, Vp, Vop, m = 0, nsim = 0, Ve.diag = NULL, method = "eigen")
+	krige.sk(y, V, Vp, Vop, m = 0, ...)
 } 
 
 \arguments{
@@ -34,9 +34,7 @@
 		and the responses to be predicted.  The size is 
 		\eqn{n \times np}.} 
   \item{m}{A numeric vector of length 1 giving the mean of each response.}
-	\item{nsim}{A non-negative value indicating the number of conditional simulations that should be returned.  If this is less than 1, then no conditional simulation is done.}
-	\item{Ve.diag}{A vector of length n specifying the measurement error variances of the observed data.} 
-	\item{method}{A character vector specifying the method used to decompose \code{V}.  Options are "eigen", "chol", or "svd" (Eigen decomposition, Cholesky decomposition, or Singular value decomposition, respectively).} 
+	\item{...}{Several additional arguments may be supplied.  If user specifies \code{nsim} to be a positive integer, then \code{nsim} conditional realizations of the predictive distribution will be generated.  If this is less than 1, then no conditional simulation is done.  If \code{nsim} is a positive integer, then \code{Ve.diag} must also be supplied.  \code{Ve.diag} is should be a vector of length \eqn{n} specifying the measurement error variances of the observed data.  This information is only used for conditional simulation, so this argument is only needed when \code{nsim} > 0.  When conditional simulation is desired, then the argument \code{method} can be to specify the method used to decompose \code{V}.  Options are "eigen", "chol", or "svd" (Eigen decomposition, Cholesky decomposition, or Singular value decomposition, respectively).  This information is only used for conditional simulation, so this argument is only applicable when \code{nsim} > 0.} 
 } 
 
 \value{
