@@ -11,11 +11,11 @@
 } 
 
 \usage{
-	get.contours(contours.list)
+	get.contours(x)
 } 
 
 \arguments{
-	\item{contours.list}{A list returned by the \code{contourLines} function.} 
+	\item{x}{A list returned by the \code{contourLines} function.} 
 } 
 
 \value{
