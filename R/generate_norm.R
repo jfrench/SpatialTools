@@ -11,3 +11,11 @@ rmvnorm <- function(nsim = 1, mu, V, method = "eigen")
 	# return simulated values
 	return(mu + decomp.V %*% matrix(rnorm(nrow(V) * nsim), nrow = nrow(V), ncol = nsim))
 }
+
+rcondnorm <- function(nsim = 1, y, mu, mup, V, Vp, Vop, method = "eigen")
+{
+	mc <- mup + crossprod(Vop, solve(V, y - mu))
+	Vc <- Vp - crossprod(Vop, solve(V, Vop))
+	return(rmvnorm(nsim, mu = mc, V = Vc, method = method))
+}
+

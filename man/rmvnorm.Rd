@@ -16,7 +16,7 @@
 
 \arguments{
 	\item{nsim}{An integer indicating the number of realizations from the distribution.} 
-	\item{mu}{A vector of length n containing the mean value of the multivariate normal distribution.} 
+	\item{mu}{A vector of length n containing the mean values of the multivariate normal distribution.} 
 	\item{V}{The covariance matrix of the multivariate normal distribution.  The matrix should be symmetric and positive definite.  The size must be \eqn{n times n}.} 
 	\item{method}{The method for performing a decomposition of the covariance matrix.  Possible values are "eigen", "chol", and "svd", Eigen value decomposition, Cholesky decomposition, or Singular Value Decomposoition, respectively.} 
 } 

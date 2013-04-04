@@ -1,6 +1,11 @@
 #Changes
 
-#0.5.0 
+#0.5.1 Modified simple.cov.sp for much faster computation times of spherical and 
+       matern covariance functions.
+
+#0.5.0	Cleaned the arguments for kriging functions.  Added functions related to contour
+       lines.  Added rcondnorm to simulate from multivariate normal distribution
+	conditional on observed data.
 
 #0.4.3	Changed krige.uk to pure R (with little change in speed).  Updated distance
 	functions to reference namespace to improve compatibility with old versions of R.

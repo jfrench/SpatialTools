@@ -47,15 +47,11 @@ simple.cov.sp <- function(D, sp.type, sp.par, error.var, smoothness, finescale.v
 
 	}else if(sp.type == "matern")
 	{
-		V <- ifelse(sD > 0, 
-					sp.par[1]*(2^(1-smoothness)/gamma(smoothness)*sD^smoothness*besselK(sD, nu = smoothness)),
-					sp.par[1])	
-
+		V <- (D > 0) * sp.par[1]*(2^(1-smoothness)/gamma(smoothness)*sD^smoothness*besselK(sD, nu = smoothness))
+		V[is.nan(V)] <- sp.par[1]
 	}else if(sp.type == "spherical")
 	{
-		V <- ifelse(D < sp.par[2],
-					sp.par[1]*(1 - 1.5*sD + 0.5*(sD)^3),
-					0)
+		V <- sp.par[1]*(1 - 1.5*sD + 0.5*(sD)^3)*(D < sp.par[2])
 	}
 	return(V + (D == 0)*(finescale.var + error.var))
 }
