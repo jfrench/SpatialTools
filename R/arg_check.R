@@ -91,7 +91,8 @@ valid_sp_type <- function(sp.type)
 	return((sp.type == "exponential" ||
 		sp.type == "gaussian" ||
 		sp.type == "matern" ||
-		sp.type == "spherical"))
+		sp.type == "spherical")||
+		sp.type == "matern2")
 }
 
 valid_t_type <- function(t.type)

@@ -1,4 +1,4 @@
-krige.uk2 <- function(y, V, Vp, Vop, X, Xp, ...)
+krige.uk <- function(y, V, Vp, Vop, X, Xp, ...)
 {
 	# Check arguments. Create unspecified arguments if needed.
 	nsim <- 0; Ve.diag <- NULL; method <- "eigen"; level <- NULL; alternative <- NULL
@@ -20,8 +20,8 @@ krige.uk2 <- function(y, V, Vp, Vop, X, Xp, ...)
 	coeff <- solve(XtViX, crossprod(ViX, y))
 
 	#compute kriging weights
-	w <- solve(V, Vop - X%*%solve(XtViX, crossprod(X, solve(V, Vop)) - t(Xp)))
-
+	w <- solve(V, Vop - X %*% solve(XtViX, crossprod(ViX, Vop) - t(Xp)))
+	
 	#blup for yp
 	pred <- crossprod(w, y)
 
@@ -61,7 +61,7 @@ krige.uk2 <- function(y, V, Vp, Vop, X, Xp, ...)
 	return(out)
 }
 
-krige.uk <- function(y, V, Vp, Vop, X, Xp, ...)
+krige.uk2 <- function(y, V, Vp, Vop, X, Xp, ...)
 {
 	# Check arguments.  Create unspecified arguments if needed.
 	nsim <- 0; Ve.diag <- NULL; method <- "eigen"; level <- NULL; alternative <- NULL
@@ -123,7 +123,7 @@ krige.uk <- function(y, V, Vp, Vop, X, Xp, ...)
 	return(out)
 }
 
-krige.ok2 <- function(y, V, Vp, Vop, ...)
+krige.ok <- function(y, V, Vp, Vop, ...)
 {
 	# Check arguments.  Create unspecified arguments if needed.
 	nsim <- 0; Ve.diag <- NULL; method <- "eigen"; level <- NULL; alternative <- NULL
@@ -148,7 +148,7 @@ krige.ok2 <- function(y, V, Vp, Vop, ...)
 	return(out)
 }
 
-krige.ok <- function(y, V, Vp, Vop, ...)
+krige.ok2 <- function(y, V, Vp, Vop, ...)
 {
 	# Check arguments.  Create unspecified arguments if needed.
 	nsim <- 0; Ve.diag <- NULL; method <- "eigen"; level <- NULL; alternative <- NULL
@@ -208,7 +208,7 @@ krige.ok <- function(y, V, Vp, Vop, ...)
 		# Compute conditional realizations.  The second and third terms simulate
 		# the kriging error.
 		sim <- matrix(pred, nrow = nrow(Vp), ncol = nsim) + newsim[-(1:n),] - 
-			Xp %*% coeff.newZ + crossprod(ViVop, newZ - X %*% coeff.newZ)
+			Xp %*% coeff.newZ - crossprod(ViVop, newZ - X %*% coeff.newZ)
 			
 #sim2 <- matrix(pred, nrow = nrow(Vp), ncol = nsim) + newsim[-(1:n),] - 
 #			coeff.newZ[1,1] - crossprod(ViVop, newZ - coeff.newZ[1,1])			

@@ -25,7 +25,7 @@
 
 \arguments{
 	\item{coords}{A numeric matrix of size \eqn{n \times d} containing the observed data locations.} 
-	\item{sp.type}{A character vector specifying the spatial covariance type.  Valid types are currently exponential, gaussian, matern, and spherical.} 
+	\item{sp.type}{A character vector specifying the spatial covariance type.  Valid types are currently exponential, gaussian, matern, matern2, and spherical.} 
 	\item{sp.par}{A vector of length 2 specifying the scale and strength of dependence of the covariance function.  The first element is the variance of the underlying spatial process (also known as the hidden or latent spatial process).  This value is also called the partial sill.   The second element is the strength of dependence between responses.}
 	\item{error.var}{A non-negative number indicating the variance of the error term.} 
 	\item{smoothness}{A positive number indicating the variance of the error term.} 
@@ -39,7 +39,8 @@
 \details{
   The spatial covariance functions are parameterized in a manner 
   consistent with the \code{cov.spatial} function in the 
-  \code{geoR} package.
+  \code{geoR} package.  The \code{matern2} covariance function is an alternative covariance function suggested by Handcock and Wallis (1994).  
+  The benefit of this parameterization is that the range parameter is that it allows the effective range to be less dependent on the smoothness parameter.
 
 	The \code{D}, \code{Dp}, and \code{Dop} arguments are supplied to decrease the number of necessary computations needed when performing repetitive analysis or simulations.  It is probably in the user's interest to not supply these arguments unless the duration of analysis is an important consideration.  Note that these arguments override the information given in \code{coords} and \code{pcoords}, i.e., if dist1(coords) != D, then D is used in subsequent calculations, etc.  This could create problems.
 }
@@ -52,7 +53,8 @@
 }
 
 
-%\references{ R core development. "Writing R Extentions". 2007. } 
+\references{ M.S. Handcock, J.R. Wallis.  An approach to statistical spatial-temporal modeling of meteorological fields (with discussion).  
+Journal of the American Statistical Association, 89 (1994), pp. 368--390. } 
 
 \author{Joshua French} 
 

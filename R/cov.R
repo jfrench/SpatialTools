@@ -7,22 +7,38 @@ cov.sp <- function(coords, sp.type = "exponential",
 	cov_sp_arg_check(coords, sp.type, sp.par, error.var, smoothness, 
 		finescale.var, pcoords, D, Dp, Dop)
 
-	#calculate distance matrix if not supplied
-	if(is.null(D)){ D <- dist1(coords) }
+	# calculate covariance matrix for observed responses
+	# calculate distance matrix if not supplied
+	if(is.null(D))
+	{ 
+		V <- simple.cov.sp(dist1(coords), sp.type, sp.par, error.var, smoothness, finescale.var)
+	}
+	else
+	{
+		V <- simple.cov.sp(D, sp.type, sp.par, error.var, smoothness, finescale.var)
+	}
 	
-	#calculate covariance matrix for observed responses
-	V <- simple.cov.sp(D, sp.type, sp.par, error.var, smoothness, finescale.var)
-	
+	#calculate covariance matrices for predicted responses and
+	#between observed responses and predicted responses
 	#calculate Dp and Dop if necessary
 	if(!is.null(pcoords))
 	{
-		if(is.null(Dp)){ Dp <- dist1(pcoords) }
-		if(is.null(Dop)){ Dop <- dist2(coords, pcoords) }
-		
-		#calculate covaraince matrices for predicted responses and
-		#between observed responses and predicted responses
-		Vp <- simple.cov.sp(Dp, sp.type, sp.par, error.var = 0, smoothness, finescale.var)
-		Vop <- simple.cov.sp(Dop, sp.type, sp.par, error.var = 0, smoothness, finescale.var) 
+		if(is.null(Dp))
+		{ 
+			Vp <- simple.cov.sp(dist1(pcoords), sp.type, sp.par, error.var = 0, smoothness, finescale.var) 
+		}
+		else
+		{
+			Vp <- simple.cov.sp(Dp, sp.type, sp.par, error.var = 0, smoothness, finescale.var) 
+		}
+		if(is.null(Dop))
+		{
+			Vop <- simple.cov.sp(dist2(coords, pcoords), sp.type, sp.par, error.var = 0, smoothness, finescale.var)
+		}
+		else
+		{
+			Vop <- simple.cov.sp(Dop, sp.type, sp.par, error.var = 0, smoothness, finescale.var)
+		}
 	}
 	
 	if(is.null(pcoords))
@@ -36,21 +52,27 @@ cov.sp <- function(coords, sp.type = "exponential",
 
 simple.cov.sp <- function(D, sp.type, sp.par, error.var, smoothness, finescale.var)
 {
-	sD <- D/sp.par[2]
 	if(sp.type == "exponential")
 	{
-		V <- sp.par[1]*exp(-sD)
+		V <- sp.par[1]*exp(-D/sp.par[2])
 
 	}else if(sp.type == "gaussian")
 	{
-		V <- sp.par[1]*exp(-sD^2)
+		V <- sp.par[1]*exp(-D/sp.par[2]^2)
 
 	}else if(sp.type == "matern")
 	{
+		sD <- D/sp.par[2]
 		V <- (D > 0) * sp.par[1]*(2^(1-smoothness)/gamma(smoothness)*sD^smoothness*besselK(sD, nu = smoothness))
 		V[is.nan(V)] <- sp.par[1]
+	}else if(sp.type == "matern2")
+	{
+		sD <- 2 * sqrt(smoothness) * D/sp.par[2]
+		V <- (D > 0) * sp.par[1]*(2^(1-smoothness)/gamma(smoothness)*sD^smoothness*besselK(sD, nu = smoothness))
+		V[is.nan(V)] <- sp.par[1]	
 	}else if(sp.type == "spherical")
 	{
+		sD <- D/sp.par[2]
 		V <- sp.par[1]*(1 - 1.5*sD + 0.5*(sD)^3)*(D < sp.par[2])
 	}
 	return(V + (D == 0)*(finescale.var + error.var))

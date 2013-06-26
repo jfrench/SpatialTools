@@ -24,6 +24,7 @@ export(krige.sk)
 export(get.contours)
 export(plot.contourLines)
 
+export(spLMPredictJoint)
 #export(rmvnorm2)
 #export(condnorm.par2)
 #export(krige.uk2)

@@ -14,4 +14,11 @@ RcppExport SEXP krige_ok(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP nsims, SEXP
 
 RcppExport SEXP krige_sk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP ms, SEXP nsims, SEXP Vediags, SEXP methods);
 
+RcppExport SEXP spLMPredict(SEXP ys, SEXP coordss, SEXP pcoordss,
+                            SEXP Xs, SEXP Xps,
+                            SEXP Bs,
+                            SEXP sigmasqs, SEXP phis, SEXP nus,
+                            SEXP evs, SEXP fvs,
+                            SEXP cov_models,
+                            SEXP methods, SEXP nreports, SEXP verboses);
 #endif

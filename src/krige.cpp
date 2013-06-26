@@ -285,4 +285,91 @@ SEXP mspe_uk(SEXP ws, SEXP Vs, SEXP Vps, SEXP Vops){
 	return Rcpp::wrap(mspe);
 }
 
+SEXP spLMPredict(SEXP ys, SEXP coordss, SEXP pcoordss,
+                    SEXP Xs, SEXP Xps,
+                 SEXP Bs,
+                 SEXP sigmasqs, SEXP phis, SEXP nus,
+                 SEXP evs, SEXP fvs,
+                 SEXP cov_models, 
+                 SEXP methods, SEXP nreports, SEXP verboses)
+{
+    NumericVector yr(ys);
+	arma::colvec y(yr.begin(), yr.size(), false);
+    
+	NumericMatrix coordsr(coordss);
+	arma::mat coords(coordsr.begin(), coordsr.nrow(), coordsr.ncol(), false);
+    
+	NumericMatrix pcoordsr(pcoordss);
+	arma::mat pcoords(pcoordsr.begin(), pcoordsr.nrow(), pcoordsr.ncol(), false);
+    
+	NumericMatrix Xr(Xs);
+	arma::mat X(Xr.begin(), Xr.nrow(), Xr.ncol(), false);
+    
+	NumericMatrix Xpr(Xps);
+	arma::mat Xp(Xpr.begin(), Xpr.nrow(), Xpr.ncol(), false);
+    
+	NumericMatrix Br(Bs);
+	arma::mat B(Br.begin(), Br.nrow(), Br.ncol(), false);
+    
+	NumericVector sigmasqr(sigmasqs);
+	NumericVector phir(phis);
+	NumericVector nur(nus);
+	NumericVector evr(evs);
+	NumericVector fvr(fvs);
+	
+	arma::colvec sigmasq(sigmasqr.begin(), sigmasqr.size(), false);
+	arma::colvec phi(phir.begin(), phir.size(), false);
+	arma::colvec nu(nur.begin(), nur.size(), false);
+	arma::colvec ev(evr.begin(), evr.size(), false);
+	arma::colvec fv(fvr.begin(), fvr.size(), false);
+    
+	int cov_model = as<int>(cov_models);
+	int method = as<int>(methods);
+	int nreport = as<int>(nreports);
+	int verbose = as<int>(verboses);
+    
+	int nsim = B.n_rows;
+	int n = coords.n_rows;
+	int np = pcoords.n_rows;
+    
+	arma::mat D = dist1(coords);
+	arma::mat Dp = dist1(pcoords);
+	arma::mat Dop = dist2(coords, pcoords);
+    
+	arma::colvec mu(n);
+	arma::colvec mup(np);
+	arma::mat V = arma::zeros(n, n);
+	arma::mat Vp = arma::zeros(np, np);
+	arma::mat Vop = arma::zeros(n, np);
+    
+	arma::mat ypsim = arma::mat(np, nsim);
+    
+	if(verbose == 1)
+	{
+        Rcout << "-------------------------------------------------" << std::endl;
+        Rcout << "		Joint Sampling" << std::endl;
+        Rcout << "-------------------------------------------------" << std::endl;
+	}
+    
+ 	for(int i = 0; i < nsim; i++)
+ 	{
+ 		if((verbose == TRUE) & ((i % nreport) == 0))
+ 		{
+			Rcout << "Sampled: " << i << " of " << nsim <<", " << 100.0*i/nsim <<"%" << std::endl;
+ 		}
+        
+ 		mu = X * trans(B.row(i));
+		mup = Xp * trans(B.row(i));
+		
+		V = cov_spBayes(D, cov_model, sigmasq(i), phi(i), nu(i), ev(i), fv(i));
+		Vp = cov_spBayes(Dp, cov_model, sigmasq(i), phi(i), nu(i), 0, fv(i));
+		Vop = cov_spBayes(Dop, cov_model, sigmasq(i), phi(i), nu(i), 0, fv(i));
+        
+ 		ypsim.col(i) = rcondnorm(1, y, mu, mup, V, Vp, Vop, method);
+	}
+    
+	return(wrap(ypsim));
+
+}
+
 
