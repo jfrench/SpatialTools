@@ -1,12 +1,13 @@
 Package: SpatialTools 
 Type: Package
 Title: Tools for spatial data analysis
-Version: 0.5.3
-Date: 2013-06-24
+Version: 0.5.4
+Date: 2013-08-02
 Author: Joshua French <joshua.french@ucdenver.edu>
 Maintainer: Joshua French <joshua.french@ucdenver.edu>
-Depends: R (>= 2.12.0), Rcpp (>= 0.9.10), RcppArmadillo (>= 0.3.0), spBayes (>= 0.3.0)
+Depends: R (>= 2.12.0), Rcpp (>= 0.9.10), RcppArmadillo (>= 0.3.0)
 LinkingTo: Rcpp, RcppArmadillo
+Imports: spBayes (>= 0.3.0)
 Suggests: geoR
 Description: Tools for spatial data analysis.  Emphasis on kriging.  Provides functions for prediction and simulation.  Intended to be relatively straightforward, fast, and flexible.
 License: GPL (>=2)

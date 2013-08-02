@@ -1,5 +1,7 @@
 #Changes
 
+#0.5.4 Updated namespace so that the spBayes package is imported, but is not a depends since it is only required for one function.
+
 #0.5.3  Modified spLMPredictJoint function to rely on C++ for much faster computation.
 
 #0.5.2  Corrected bug in cov.sp when user-supplied distance matrices are supplied.  Added spLMPredictJoint function.
