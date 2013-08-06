@@ -89,7 +89,7 @@ V <- simple.cov.sp(D = dist1(coords), cov.model, c(sigmasq, 1/phi), error.var = 
 y <- X \%*\% B + rmvnorm(1, rep(0, n), V) + rnorm(n, 0, sqrt(tausq))
 
 # Create spLM object
-m1 <- spLM(y ~ X - 1, coords = coords, starting = starting,
+m1 <- spBayes::spLM(y ~ X - 1, coords = coords, starting = starting,
 	tuning = tuning, priors = priors.1, cov.model = cov.model,
 	n.samples = n.samples, verbose = FALSE, n.report = n.report)
 
