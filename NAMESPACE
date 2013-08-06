@@ -1,5 +1,5 @@
 useDynLib(SpatialTools)
-important(spBayes)
+import(spBayes)
 
 export(coincident)
 export(dist1)
