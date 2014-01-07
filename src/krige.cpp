@@ -39,10 +39,10 @@ SEXP krige_uk(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP Xs, SEXP Xps, SEXP nsi
 	arma::mat vcov_coef = inv(XtViX);
 	
 	//compute generalized least squares estimates of regression coefficients
-	arma::colvec coeff = solve(sympd(XtViX), trans(ViX) * y);
+	arma::colvec coeff = solve(XtViX, trans(ViX) * y);
 	
 	//compute kriging weights
-	arma::mat w = solve(V, Vop - X * solve(sympd(XtViX), trans(X) * solve(sympd(V), Vop) - trans(Xp)));
+	arma::mat w = solve(V, Vop - X * solve(XtViX, trans(X) * solve(V, Vop) - trans(Xp)));
 	
 	//best linear unbiased predictor of response at prediction locations
 	arma::mat pred = trans(w) * y;
