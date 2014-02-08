@@ -1,5 +1,6 @@
 useDynLib(SpatialTools)
 import(spBayes)
+importFrom(Rcpp, evalCpp)
 
 export(coincident)
 export(dist1)

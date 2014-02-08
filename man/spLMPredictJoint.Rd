@@ -59,7 +59,7 @@ The function returns a \eqn{np \times B} matrix of posterior predictive samples,
 n <- 100
 np <- 12
 n.samples <- 1000
-burnin.start <- .5 * n.samples + 1
+burnin.start <- .9 * n.samples + 1
 sigmasq <- 1
 tausq <- 0.0
 phi <- 1
