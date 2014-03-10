@@ -1,45 +1,33 @@
-\name{dist2} 
-
+\name{dist2}
 \alias{dist2}
-
-\title{
-	Calculates Euclidean distance between coordinates of two matrices
-} 
-
-\description{
-	Calculates Euclidean distance between the coordinates of \code{coords1} 
-	and \code{coords2} matrices. It is assumed that \code{coords1} and 
-	\code{coords2} have the same number of columns but not 
-	necessarily the same number of rows.
-} 
-
+\title{Calculate Euclidean distance matrix between coordinates of two matrices}
 \usage{
-	dist2(coords1, coords2)
-} 
-
+dist2(coords1, coords2)
+}
 \arguments{
-	\item{coords1}{A matrix of dimensions \eqn{nr1\times nc}} 
-	\item{coords2}{A matrix of dimensions \eqn{nr2\times nc}} 
-} 
+  \item{coords1}{An \eqn{nr1 \times nc1} numeric matrix of
+  coordinates.}
 
+  \item{coords2}{An \eqn{nr2 \times nc2} numeric matrix of
+  coordinates.}
+}
 \value{
-  \code{dist2} returns a matrix of size \eqn{nr1\times nr2} containing the 
-  Eucliean distances between
-  each pair of coordinates in \code{coords1} and \code{coords2}.
+An \eqn{nr1 \times nr2} matrix of Euclidean distances.
 }
-
-
-%\references{ R core development. "Writing R Extentions". 2007. } 
-
-\author{Joshua French} 
-
-\keyword{distance} 
-\keyword{Euclidean} 
-
-\seealso{ \code{dist1} } 
-
+\description{
+\code{dist2} takes the matrices of coordinates
+\code{coords1} and \code{coords2} and returns the
+inter-Euclidean distances between coordinates.
+}
 \examples{
-	x1 <- matrix(rnorm(30), ncol = 3)
-	x2 <- matrix(rnorm(60), ncol = 3)
-	dist2(x1, x2)
+x1 <- matrix(rnorm(30), ncol = 3)
+x2 <- matrix(rnorm(60), ncol = 3)
+dist2(x1, x2)
 }
+\author{
+Joshua French
+}
+\seealso{
+dist, dist1
+}
+

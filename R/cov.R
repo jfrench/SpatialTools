@@ -58,7 +58,7 @@ simple.cov.sp <- function(D, sp.type, sp.par, error.var, smoothness, finescale.v
 
 	}else if(sp.type == "gaussian")
 	{
-		V <- sp.par[1]*exp(-D/sp.par[2]^2)
+		V <- sp.par[1]*exp(-(D/sp.par[2])^2)
 
 	}else if(sp.type == "matern")
 	{

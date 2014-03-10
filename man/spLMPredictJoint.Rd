@@ -58,13 +58,13 @@ The function returns a \eqn{np \times B} matrix of posterior predictive samples,
 # Set parameters
 n <- 100
 np <- 12
-n.samples <- 1000
-burnin.start <- .9 * n.samples + 1
+n.samples <- 10
+burnin.start <- .5 * n.samples + 1
 sigmasq <- 1
 tausq <- 0.0
 phi <- 1
 cov.model <- "exponential"
-n.report <- 500
+n.report <- 5
 
 # Generate coordinates
 coords <- matrix(runif(2 * n), ncol = 2); 
