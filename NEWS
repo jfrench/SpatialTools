@@ -1,5 +1,7 @@
 #Changes
 
+#0.5.8 Added class jointPredictiveSample to output from spLMPredictJoint function.
+
 #0.5.7 Fixed bug in calculation of Gaussian covariance function.
 
 #0.5.6 Updated DESCRIPTION and NAMESPACE 

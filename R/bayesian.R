@@ -59,7 +59,7 @@ spLMPredictJoint <- function(sp.obj, pred.coords, pred.covars, start = 1,
 	if(method == "chol") method.int <- 2
 	if(method == "svd") method.int <- 3
 	
-	.Call( "spLMPredict", ys = sp.obj$Y, 
+	out = .Call( "spLMPredict", ys = sp.obj$Y, 
 		coordss = sp.obj$coords, pcoordss = pred.coords, 
 		Xs = sp.obj$X, 
 		Xps = pred.covars, 
@@ -69,6 +69,8 @@ spLMPredictJoint <- function(sp.obj, pred.coords, pred.covars, start = 1,
 		cov_models = cov.model,
 		methods = method.int, nreports = n.report, verboses = as.numeric(verbose), 
 		PACKAGE = "SpatialTools")
+  class(out) = "jointPredictiveSample"
+  return(out)
 }
 
 

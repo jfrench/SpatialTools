@@ -39,7 +39,7 @@
 } 
 
 \value{
-The function returns a \eqn{np \times B} matrix of posterior predictive samples, where \code{B} is the number of posterior samples.
+The function returns a \eqn{np \times B} matrix of posterior predictive samples, where \code{B} is the number of posterior samples.  The class is \code{jointPredicitveSample}.
 }
 
 \details{This function samples from the joint posterior predictive distribution of a Bayesian spatial linear model. Specifically, it is intended to be similar to the \code{spPredict} function in the \code{spBayes} except that it samples from the joint distribution instead of the marginal distribution.  However, it will only work for \code{spLM} objects and should have the same limitations as the \code{spLM} and \code{spPredict} functions.  Note that the \code{spRecover} function is called internally to recover the posterior samples form the posterior distribution of the spatial model.  
