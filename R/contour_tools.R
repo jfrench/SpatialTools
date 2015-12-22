@@ -18,10 +18,10 @@ plot.contourLines <- function(x, begin=1, end = length(x), add = FALSE, ...)
 		contours <- get.contours(x)
 		rx <- range(contours[,1])
 		ry <- range(contours[,2])
-		plot(rx, ry, type = "n", ...)
+		graphics::plot(rx, ry, type = "n", ...)
 	}
 	for(i in begin:end)
 	{
-		lines(x[[i]]$x, x[[i]]$y, ...)
+		graphics::lines(x[[i]]$x, x[[i]]$y, ...)
 	}
 }

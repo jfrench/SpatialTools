@@ -1,5 +1,11 @@
 #Changes
 
+#1.0.2 Corrected bug in calculation of loglik for cov.st and cov.sp.  Fixed approach to passing control list to maxlik.* functions.
+
+#1.0.1 Cleaned up documentation a bit more.  When conditional simulation is performed using the krige.sk, krige.ok, or krige.uk functions, the list returned has class "krigeConditionalSample".
+
+#1.0.0 Cleaned up namespace issues to correct warnings/notes on CRAN.  Also, removed pweights.uk.  Made some modifications to documentation, behavior of option arguments in krige.sk, krige.ok, krige.uk.
+
 #0.5.8 Added class jointPredictiveSample to output from spLMPredictJoint function.
 
 #0.5.7 Fixed bug in calculation of Gaussian covariance function.

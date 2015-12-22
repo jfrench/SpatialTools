@@ -16,7 +16,7 @@
 	    error.ratio = stop("specify error.ratio argument"), 
 	    smoothness = 0.5,  
 	    D = NULL, reml = TRUE, lower = NULL, upper = NULL, 
-	    control = list(TRACE = TRUE), optimizer="nlminb")
+	    control = list(trace = TRUE), optimizer="nlminb")
 } 
 
 \arguments{

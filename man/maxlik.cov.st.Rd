@@ -15,7 +15,7 @@
 	    range.par = stop("specify range.par argument"), 
 	    error.ratio = stop("specify error.ratio argument"), 
 	    smoothness = 0.5, t.type = "ar1", t.par = .5, D = NULL, T = NULL, 
-	    reml = TRUE, lower = NULL, upper = NULL, control = list(TRACE = TRUE), 
+	    reml = TRUE, lower = NULL, upper = NULL, control = list(trace = TRUE), 
 	    optimizer="nlminb")
 } 
 

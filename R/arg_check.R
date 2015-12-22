@@ -347,7 +347,7 @@ maxlik_cov_st_check_arg <- function(X, y, coords, time = time, sp.type,
 }
 
 krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m, 
-	nsim, Ve.diag, method, level, alternative)
+	nsim, Ve.diag, method)
 {
 
 	if(!is.numeric(y))
@@ -441,115 +441,7 @@ krige_arg_check <- function(y, V, Vp, Vop, X, Xp, m,
 	else if(method == "chol"){ method <- 2}
 	else{ method <- 3 }
 	
-	if(!is.null(level))
-	{
-		if(is.null(alternative))
-		{
-			stop("alternative must be specified when u is non NULL")
-		}
-		if(is.null(nsim))
-		{
-			stop("nsim must be a positive integer when u is specified")
-		}
-		if(!is.numeric(level))
-		{
-			stop("u must be a numeric value")
-		}
-		if(length(level) > 1)
-		{
-			stop("u must be a vector of length 1")
-		}
-	}
-	if(!is.null(alternative))
-	{
-		if(is.null(level))
-		{
-			stop("level must be specified when alternative is not NULL")
-		}
-
-		if(!(alternative == "less" || alternative == "greater" || alternative == "two.sided"))
-		{
-			stop('alternative must equal "two.sided" or "less" or "greater"')
-		}
-	}
 	return(list(method = method, Ve.diag = Ve.diag))
-}
-
-pweights_uk_arg_check <- function(X, V, Xp, Vp, Vop)
-{
-	if(!is.matrix(X))
-	{
-		stop("X must be a matrix object")
-	}
-	if(!is.matrix(V))
-	{
-		stop("V must be a matrix object")
-	}
-	if(!is.matrix(Xp))
-	{
-		stop("Xp must be a matrix object")
-	}
-	if(!is.matrix(Vp))
-	{
-		stop("Vp must be a matrix object")
-	}
-	if(!is.matrix(Vop))
-	{
-		stop("Vop must be a matrix object")
-	}
-	if(nrow(X) != nrow(V))
-	{
-		stop("The nrows in X must match nrows in V")
-	}
-	if(nrow(X) != nrow(Vop))
-	{
-		stop("The nrows in X must match nrows in Vop")
-	}
-	if(nrow(Xp) != nrow(Vp))
-	{
-		stop("The nrows in Xp must match nrows in Vp")
-	}
-	if(nrow(Xp) != ncol(Vop))
-	{
-		stop("The nrows in Xp must match ncols in Vop")
-	}
-	if(ncol(X) != ncol(Xp))
-	{
-		stop("The ncols in X must match ncols in Xp")
-	}
-}
-
-mspe_uk_arg_check <- function(w, V, Vp, Vop)
-{
-	if(!is.matrix(w))
-	{
-		stop("w must be a matrix object")
-	}
-	if(!is.matrix(V))
-	{
-		stop("V must be a matrix object")
-	}
-	if(!is.matrix(Vop))
-	{
-		stop("Vop must be a matrix object")
-	}
-	if(nrow(w) != nrow(V))
-	{
-		stop("The nrows in w must match nrows in V")
-	}
-	if(ncol(w) != ncol(Vop))
-	{
-		stop("The ncols in w must match ncols in Vop")
-	}
-	if(nrow(w) != nrow(Vop))
-	{
-		stop("The nrows in w must match nrows in Vop")
-	}
-	if(ncol(w) != ncol(Vop))
-	{
-		stop("The ncols in w must match ncols in Vop")
-	}
-
 }
 
 condnorm_par_arg_check <- function(y, V, Vp, Vop, coeff, X, Xp, method)

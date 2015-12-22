@@ -9,7 +9,7 @@ rmvnorm <- function(nsim = 1, mu, V, method = "eigen")
 	decomp.V <- decomp.cov(V, method = method)
 	
 	# return simulated values
-	return(mu + decomp.V %*% matrix(rnorm(nrow(V) * nsim), nrow = nrow(V), ncol = nsim))
+	return(mu + decomp.V %*% matrix(stats::rnorm(nrow(V) * nsim), nrow = nrow(V), ncol = nsim))
 }
 
 rcondnorm <- function(nsim = 1, y, mu, mup, V, Vp, Vop, method = "eigen")
