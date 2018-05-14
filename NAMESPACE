@@ -1,4 +1,4 @@
-useDynLib(SpatialTools)
+useDynLib(SpatialTools, .registration = TRUE)
 import(spBayes)
 importFrom(Rcpp, evalCpp)
 importFrom(graphics, lines, plot)

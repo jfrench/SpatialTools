@@ -1,7 +1,7 @@
 #include <R.h>
 #include <Rmath.h>
 
-void dist1(double *x, int *nc, int *nr, double *d)
+void dist1_c(double *x, int *nc, int *nr, double *d)
 {
 	int ncol = nc[0];
 	int nrow = nr[0];

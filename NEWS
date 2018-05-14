@@ -1,5 +1,7 @@
 #Changes
 
+#1.0.4 Updated package to register routines.  This removed the NOTE on CRAN.
+
 #1.0.2 Corrected bug in calculation of loglik for cov.st and cov.sp.  Fixed approach to passing control list to maxlik.* functions.
 
 #1.0.1 Cleaned up documentation a bit more.  When conditional simulation is performed using the krige.sk, krige.ok, or krige.uk functions, the list returned has class "krigeConditionalSample".
