@@ -18,7 +18,7 @@ SEXP decomp_cov(SEXP Vs, SEXP methods){
 		//compute eigen values and vectors of V
 		eig_sym(eigval, eigvec, V);
 		
-		for(int i = 0; i < eigval.n_rows; i++)
+		for(unsigned int i = 0; i < eigval.n_rows; i++)
 		{
 			if(eigval(i) < 0)
 			{

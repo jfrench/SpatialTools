@@ -1,20 +1,20 @@
 #include "coincident_cpp.h"
+#include <cmath>
 
 using namespace Rcpp;
 
 SEXP coincident_cpp(SEXP coords1, SEXP coords2, SEXP eps){
 
-		#include <math.h>
-
 		NumericMatrix x(coords1), y(coords2);
 		NumericVector tol(eps);
-		NumericMatrix coin(x.nrow(), 2);
+		unsigned int nr = x.rows();
+		NumericMatrix coin(nr, 2);
 
 		int count = 0;
 
-		for(int i = 1; i <= x.nrow(); i++)
+		for(unsigned int i = 1; i <= nr; i++)
 		{
-			for(int j = 1; j <= y.nrow(); j++)
+			for(unsigned int j = 1; j <= nr; j++)
 			{
 				if(fabs(x(i - 1, 0) - y(j - 1, 0)) < tol[0])
 				{
@@ -30,7 +30,7 @@ SEXP coincident_cpp(SEXP coords1, SEXP coords2, SEXP eps){
 
 		NumericMatrix return_coin(count, 2);
 
-		for(int i = 0; i < x.nrow(); i++)
+		for(unsigned i = 0; i < nr; i++)
 		{
 			if(coin(i, 0) > 0)
 			{

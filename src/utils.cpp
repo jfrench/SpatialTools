@@ -50,7 +50,7 @@ arma::mat decomp_V(const arma::mat &V, int method)
         //compute eigen values and vectors of V
         eig_sym(eigval, eigvec, V);
         
-        for(int i = 0; i < eigval.n_rows; i++)
+        for(unsigned int i = 0; i < eigval.n_rows; i++)
         {
             if(eigval(i) < 0)
             {

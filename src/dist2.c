@@ -6,7 +6,7 @@ void dist2_c(double *x1, double *x2, int *nc, int *nr1, int *nr2, double *d)
 	int ncol = nc[0];
 	int nrow1 = nr1[0];
 	int nrow2 = nr2[0];
-	int i, j, k;
+	unsigned int i, j, k;
 	
 	for(j = 0; j < nrow2; j++)
 	{

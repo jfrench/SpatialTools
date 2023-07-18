@@ -1,5 +1,7 @@
 #Changes
 
+#1.0.5 Fixed math.h header issue in coincident.cpp. Fixed unsigned int comparison warnings in C++ files.
+
 #1.0.4 Updated package to register routines.  This removed the NOTE on CRAN.
 
 #1.0.2 Corrected bug in calculation of loglik for cov.st and cov.sp.  Fixed approach to passing control list to maxlik.* functions.

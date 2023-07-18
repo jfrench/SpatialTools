@@ -23,7 +23,7 @@ SEXP rmvnorm(SEXP nsims, SEXP mus, SEXP Vs, SEXP methods){
 		//compute eigen values and vectors of V
 		eig_sym(eigval, eigvec, V);
 		
-		for(int i = 0; i < eigval.n_rows; i++)
+		for(unsigned int i = 0; i < eigval.n_rows; i++)
 		{
 			if(eigval(i) < 0)
 			{
@@ -92,7 +92,7 @@ SEXP condnorm_par(SEXP ys, SEXP Vs, SEXP Vps, SEXP Vops, SEXP coeffs, SEXP Xs, S
 	//compute eigen values and vectors of Vc
 	eig_sym(eigval, eigvec, Vc);
 
-	for(int i = 0; i < eigval.n_rows; i++)
+	for(unsigned int i = 0; i < eigval.n_rows; i++)
 	{
 	if(eigval(i) < 0)
 	{

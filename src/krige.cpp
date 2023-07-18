@@ -328,7 +328,7 @@ SEXP spLMPredict(SEXP ys, SEXP coordss, SEXP pcoordss,
 	int nreport = as<int>(nreports);
 	int verbose = as<int>(verboses);
     
-	int nsim = B.n_rows;
+	unsigned int nsim = B.n_rows;
 	int n = coords.n_rows;
 	int np = pcoords.n_rows;
     
@@ -351,7 +351,7 @@ SEXP spLMPredict(SEXP ys, SEXP coordss, SEXP pcoordss,
         Rcout << "-------------------------------------------------" << std::endl;
 	}
     
- 	for(int i = 0; i < nsim; i++)
+ 	for(unsigned int i = 0; i < nsim; i++)
  	{
  		if((verbose == TRUE) & ((i % nreport) == 0))
  		{
